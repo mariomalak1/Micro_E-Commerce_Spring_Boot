@@ -1,12 +1,13 @@
 package Services;
 
-import Models.Customer;
 import Models.Product;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@Service
 public class ProductInMemoryServices implements IProductServices{
 
     @Override

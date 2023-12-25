@@ -9,19 +9,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("api/product/")
+@RestController
+@RequestMapping("api/product")
 public class ProductController {
 
     @Autowired
     IProductServices productServices = new ProductInMemoryServices();
 
     @PostMapping("")
-    Product addProduct(@RequestBody Product product){
+    public Product addProduct(@RequestBody Product product){
         return productServices.addProduct(product);
     }
 
-    @DeleteMapping("delete/<serial>")
-    Boolean deleteProduct(@RequestParam String serial){
+    @DeleteMapping("delete/{serial}")
+    public Boolean deleteProduct(@PathVariable String serial){
         Product p = productServices.getProduct(serial);
         if (p == null){
             return false;
@@ -30,13 +31,13 @@ public class ProductController {
         return true;
     }
 
-    @GetMapping("getProduct/<serial>")
-    Product getProduct(@RequestParam String serial){
+    @GetMapping("getProduct/{serial}")
+    public Product getProduct(@PathVariable String serial){
         return productServices.getProduct(serial);
     }
 
     @GetMapping("getAllProduct/")
-    List<Product> getAllProducts(){
+    public List<Product> getAllProducts(){
         return productServices.getAllProducts();
     }
 }

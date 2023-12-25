@@ -3,19 +3,19 @@ package Services;
 import Models.Customer;
 import Models.Order;
 import Services.DataBaseInMemory;
+import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 
+@Service
 public class OrderInMemoryServices implements IOrderServices{
     @Override
     public Order addOrder(Order o) {
-//        DataBaseInMemory.orderList.entrySet(Order);
         return null;
     }
 
     @Override
-    public Boolean deleteOrder(Order o) {
+    public Order deleteOrder(Order o) {
         return null;
     }
 
