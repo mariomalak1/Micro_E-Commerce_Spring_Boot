@@ -9,5 +9,7 @@ import java.util.HashMap;
 public class DataBaseInMemory {
     static HashMap<Integer, Order> orderList = new HashMap<Integer, Order>();
     static HashMap<Integer, Customer> customerList = new HashMap<Integer, Customer>();
-    static HashMap<Integer, Product> productList = new HashMap<Integer, Product>();
+
+    // is unique with his serial number
+    static HashMap<String, Product> productList = new HashMap<String, Product>();
 }
