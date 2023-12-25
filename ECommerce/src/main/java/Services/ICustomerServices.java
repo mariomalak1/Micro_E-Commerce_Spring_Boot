@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ICustomerServices {
     Customer addCustomer(Customer c);
-    Boolean deleteCustomer(Customer c);
+    Customer deleteCustomer(Customer c);
     Customer getCustomer (int id);
     List<Customer> getAllCustomers();
 }

@@ -18,9 +18,8 @@ public class CustomerInMemoryServices implements ICustomerServices{
     }
 
     @Override
-    public Boolean deleteCustomer(Customer c) {
-        DataBaseInMemory.customerList.remove(c.getCustomerID());
-        return true;
+    public Customer deleteCustomer(Customer c) {
+        return DataBaseInMemory.customerList.remove(c.getCustomerID());
     }
 
     @Override
