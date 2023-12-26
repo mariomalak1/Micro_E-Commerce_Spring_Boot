@@ -8,6 +8,8 @@ import Services.ICustomerServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/customers")
 public class CustomerController {
@@ -63,4 +65,11 @@ public class CustomerController {
             return 0.0;
         }
     }
+
+    @GetMapping("/getAllCustomers/")
+    public List<Customer> getAllCustomer(){
+        return customerServices.getAllCustomers();
+    }
+
+
 }

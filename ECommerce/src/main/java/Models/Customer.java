@@ -9,6 +9,11 @@ public class Customer {
     private String Email;
     private Double Balance;
     private Boolean Logged;
+    private String Address;
+
+    public static int getCustomersNumber() {
+        return CustomersNumber;
+    }
 
     public Customer(String name, String password, String email, Double balance) {
         Name = name;
@@ -28,20 +33,20 @@ public class Customer {
         CustomerID = CustomersNumber;
     }
 
-    public static int getCustomersNumber() {
-        return CustomersNumber;
-    }
-
-    public static void setCustomersNumber(int customersNumber) {
-        CustomersNumber = customersNumber;
-    }
-
     public int getCustomerID() {
         return CustomerID;
     }
 
     public void setCustomerID(int customerID) {
         CustomerID = customerID;
+    }
+
+    public String getAddress(){
+        return Address;
+    }
+
+    public void setAddress(String address){
+        Address = address;
     }
 
     public String getName() {
@@ -78,6 +83,14 @@ public class Customer {
 
     public Boolean isLogged(){
         return Logged;
+    }
+
+    public void logout(){
+        Logged = false;
+    }
+
+    public void login(){
+        Logged = true;
     }
 
     @Override
