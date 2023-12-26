@@ -48,4 +48,19 @@ public class CustomerController {
             return 0.0;
         }
     }
+
+    @PostMapping("/putBalance/")
+    public Double setBalance(@RequestParam double balance, @RequestBody String email){
+        Customer customer = customerServices.getCustomer(email);
+        if (customer != null){
+            if (customer.isLogged()){
+                customer.setBalance(balance);
+                return customer.getBalance();
+            }else{
+                return 0.0;
+            }
+        }else{
+            return 0.0;
+        }
+    }
 }
