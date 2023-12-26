@@ -10,4 +10,5 @@ public interface ICustomerServices {
     Customer deleteCustomer(Customer c);
     Customer getCustomer (String Email);
     List<Customer> getAllCustomers();
+    Customer getCustomerIsLogged(String emails);
 }

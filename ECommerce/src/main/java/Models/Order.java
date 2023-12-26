@@ -8,6 +8,7 @@ public abstract class Order {
     protected Customer Customer;
     protected Order ParentOrder;
     protected List<OrderItem> orderItemList;
+    protected Boolean Finished;
 
 
     public int getOrderID() {
@@ -58,5 +59,13 @@ public abstract class Order {
             }
         }
         return null;
+    }
+
+    public void finishOrder(){
+        Finished = true;
+    }
+
+    public Boolean isFinished(){
+        return Finished;
     }
 }

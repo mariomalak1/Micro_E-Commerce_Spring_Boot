@@ -37,4 +37,15 @@ public class CustomerInMemoryServices implements ICustomerServices{
         }
         return customerList;
     }
+
+    public Customer getCustomerIsLogged(String email){
+        Customer customer = getCustomer(email);
+        if (customer != null) {
+            if (customer.isLogged()) {
+                return customer;
+            }
+        }
+        return null;
+    }
 }
+

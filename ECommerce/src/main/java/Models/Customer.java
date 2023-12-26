@@ -1,5 +1,7 @@
 package Models;
 
+import java.util.List;
+
 public class Customer {
     private static int CustomersNumber;
 
@@ -10,6 +12,9 @@ public class Customer {
     private Double Balance;
     private Boolean Logged;
     private String Address;
+
+    private List<Order>orders;
+    private List<Order>NeedConfirmOrders;
 
     public static int getCustomersNumber() {
         return CustomersNumber;
@@ -91,6 +96,22 @@ public class Customer {
 
     public void login(){
         Logged = true;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public void addOrder(Order order){
+        orders.add(order);
+    }
+
+    public void deleteOrder(Order order){
+        orders.remove(order);
     }
 
     @Override
