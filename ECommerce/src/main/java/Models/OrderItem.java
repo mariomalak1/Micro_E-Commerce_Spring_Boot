@@ -52,9 +52,7 @@ public class OrderItem {
         this.order = order;
     }
 
-    public double totalPrice(){
+    public double getTotalPrice(){
         return Quantity * product.getPrice();
     }
-
-
 }

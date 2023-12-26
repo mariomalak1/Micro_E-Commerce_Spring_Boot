@@ -3,10 +3,20 @@ package Models;
 import java.util.List;
 
 public abstract class Order {
-    private Customer Customer;
-    private Order ParentOrder = null;
-    private List<OrderItem> orderItemList;
+    static int OrdersNumber = 0;
+    int OrderID;
+    protected Customer Customer;
+    protected Order ParentOrder;
+    protected List<OrderItem> orderItemList;
 
+
+    public int getOrderID() {
+        return OrderID;
+    }
+
+    public void setOrderID(int orderID) {
+        OrderID = orderID;
+    }
     public abstract double getTotalPrice();
 
     public Models.Customer getCustomer() {
@@ -38,6 +48,15 @@ public abstract class Order {
     }
 
     public void removeOrderItem(OrderItem orderItem){
+        orderItemList.remove(orderItem);
+    }
 
+    public OrderItem getOrderItem(int id){
+        for (OrderItem i:orderItemList) {
+            if (i.getID() == id){
+                return i;
+            }
+        }
+        return null;
     }
 }
