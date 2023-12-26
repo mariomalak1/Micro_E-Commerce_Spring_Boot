@@ -12,28 +12,28 @@ public class CustomerInMemoryServices implements ICustomerServices{
     @Override
     public Customer addCustomer(Customer c) {
         // check that the customer is newly added
-        if (DataBaseInMemory.customerList.get(c.getCustomerID()) == null){
-            return DataBaseInMemory.customerList.put(c.getCustomerID(), c);
+        if (DataBaseInMemory.customerList.get(c.getEmail()) == null){
+            return DataBaseInMemory.customerList.put(c.getEmail(), c);
         }
         return null;
     }
 
     @Override
     public Customer deleteCustomer(Customer c) {
-        return DataBaseInMemory.customerList.remove(c.getCustomerID());
+        return DataBaseInMemory.customerList.remove(c.getEmail());
     }
 
     @Override
-    public Customer getCustomer(int id) {
-        return DataBaseInMemory.customerList.get(id);
+    public Customer getCustomer(String email) {
+        return DataBaseInMemory.customerList.get(email);
     }
 
     @Override
     public List<Customer> getAllCustomers() {
-        Set<Integer> customersIDs = DataBaseInMemory.customerList.keySet();
+        Set<String> customersEmails = DataBaseInMemory.customerList.keySet();
         List<Customer> customerList = new ArrayList<>();
-        for (Integer id: customersIDs){
-            customerList.add(DataBaseInMemory.customerList.get(id));
+        for (String email: customersEmails){
+            customerList.add(DataBaseInMemory.customerList.get(email));
         }
         return customerList;
     }

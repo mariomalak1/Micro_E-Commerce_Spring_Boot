@@ -8,6 +8,6 @@ import java.util.List;
 public interface ICustomerServices {
     Customer addCustomer(Customer c);
     Customer deleteCustomer(Customer c);
-    Customer getCustomer (int id);
+    Customer getCustomer (String Email);
     List<Customer> getAllCustomers();
 }

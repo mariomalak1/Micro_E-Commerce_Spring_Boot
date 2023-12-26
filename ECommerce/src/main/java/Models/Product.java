@@ -8,7 +8,11 @@ public class Product {
     Double Price;
     Integer AvailableNumber;
 
-    
+    @Override
+    public String toString() {
+        return "Product Data : " + "Serial Number -> " + getSerialNumber() + " Name -> " + getName() + " Vendor -> " + getVendor() + " Category -> " + getCategory() + " Price -> " + getPrice() + " Available Number -> " + getAvailableNumber();
+    }
+
     public String getSerialNumber() {
         return SerialNumber;
     }

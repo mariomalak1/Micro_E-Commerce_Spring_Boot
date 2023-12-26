@@ -8,11 +8,13 @@ public class Customer {
     private String Password;
     private String Email;
     private Double Balance;
+    private Boolean Logged;
 
     public Customer(String name, String password, String email, Double balance) {
         Name = name;
         Password = password;
         Email = email;
+        this.Logged = true;
 
         // assign the balance by a default value
         if (balance == 0){
@@ -72,5 +74,14 @@ public class Customer {
 
     public void setBalance(Double balance) {
         Balance = balance;
+    }
+
+    public Boolean isLogged(){
+        return Logged;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer Data : ID -> " + " Name -> " + this.getName() + " Email -> " + this.getEmail() + " Balance -> " + getBalance();
     }
 }
