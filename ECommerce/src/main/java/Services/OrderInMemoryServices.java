@@ -38,4 +38,15 @@ public class OrderInMemoryServices implements IOrderServices{
         }
         return orders;
     }
+
+    @Override
+    public Order getUnFinishedOrderForCustomer(Customer customer) {
+        List<Order> orders = customer.getOrders();
+        for (Order order : orders){
+            if (! order.isFinished()){
+                return order;
+            }
+        }
+//        Order order = new Sin
+    }
 }

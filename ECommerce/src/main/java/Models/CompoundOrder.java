@@ -3,7 +3,7 @@ package Models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompoundOrder extends Order{
+public class CompoundOrder extends Order {
     private List<Order> Orders;
     private List<Customer> confirmedCustomers;
 
@@ -11,6 +11,7 @@ public class CompoundOrder extends Order{
         OrdersNumber++;
         OrderID = OrdersNumber;
         super.Customer = customer;
+        customer.addOrder(this);
         super.ParentOrder = null;
         super.orderItemList = new ArrayList<>();
         Orders = new ArrayList<>();
@@ -26,6 +27,7 @@ public class CompoundOrder extends Order{
     }
 
     public void addOrder(Order order){
+        System.out.println("from adding order");
         order.setParentOrder(this);
         Orders.add(order);
     }
@@ -79,5 +81,30 @@ public class CompoundOrder extends Order{
         }
 
         return total;
+    }
+
+    @Override
+    public void finishOrder() {
+        for (Order o: Orders) {
+            o.finishOrder();
+        }
+        Finished = true;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append("Compound Order : ID -> ").append(getOrderID()).append(" Customer Email -> ").append(getCustomer().getEmail()).append("\n");
+        for (OrderItem o: super.orderItemList) {
+            str.append("\t");
+            str.append(o.toString());
+            str.append("\n");
+        }
+        for (Order o: this.Orders) {
+            str.append("\t");
+            str.append(o);
+            str.append("\n");
+        }
+        return str.toString();
     }
 }

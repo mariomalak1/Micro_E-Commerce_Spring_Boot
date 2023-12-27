@@ -55,4 +55,9 @@ public class OrderItem {
     public double getTotalPrice(){
         return Quantity * product.getPrice();
     }
+
+    @Override
+    public String toString() {
+        return "Item : ID -> " + getID() + " Order ID -> " + getOrder().getOrderID() + " Product Serial Number -> " + getProduct().getSerialNumber() + " Quantity -> " + getQuantity();
+    }
 }

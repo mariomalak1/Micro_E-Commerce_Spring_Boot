@@ -15,11 +15,7 @@ public class OrderController {
     IOrderServices orderServices = new OrderInMemoryServices();
 
     @Autowired
-    IOrderItemServices orderItemServices = new OrderItemInMemoryServices();
-
-    @Autowired
     IProductServices productServices = new ProductInMemoryServices();
-
 
     @PostMapping("")
     public Order addOrder(@RequestBody String email, @RequestParam(required = false) Boolean composite){
@@ -35,18 +31,6 @@ public class OrderController {
                 order = new SingleOrder(customer);
             }
             return order;
-        }
-    }
-
-    @PostMapping("addProduct/")
-    public Product addProductInOrder(@RequestBody String email, @RequestParam String productSerialNumber, @RequestParam Integer quantity){
-        Customer customer = customerServices.getCustomerIsLogged(email);
-        if (customer == null){
-            return null;
-        }
-        else{
-            Product product = productServices.getProduct(productSerialNumber);
-
         }
     }
 }

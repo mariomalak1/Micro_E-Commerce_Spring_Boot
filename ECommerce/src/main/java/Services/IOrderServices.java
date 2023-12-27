@@ -10,4 +10,6 @@ public interface IOrderServices {
     Order deleteOrder(Order o);
     Order getOrder (int id);
     List<Order> getAllOrdersForCustomer(Customer c);
+
+    Order getUnFinishedOrderForCustomer(Customer customer);
 }

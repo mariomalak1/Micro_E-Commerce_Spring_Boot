@@ -20,7 +20,7 @@ public abstract class Order {
     }
     public abstract double getTotalPrice();
 
-    public Models.Customer getCustomer() {
+    public Customer getCustomer() {
         return Customer;
     }
 
@@ -32,7 +32,7 @@ public abstract class Order {
         return ParentOrder;
     }
 
-    public void setCustomer(Models.Customer customer) {
+    public void setCustomer(Customer customer) {
         Customer = customer;
     }
 
@@ -61,9 +61,7 @@ public abstract class Order {
         return null;
     }
 
-    public void finishOrder(){
-        Finished = true;
-    }
+    public abstract void finishOrder();
 
     public Boolean isFinished(){
         return Finished;
