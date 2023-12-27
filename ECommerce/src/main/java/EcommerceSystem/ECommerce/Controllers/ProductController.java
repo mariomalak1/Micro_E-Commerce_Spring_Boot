@@ -17,8 +17,9 @@ public class ProductController {
     IProductServices productServices = new ProductInMemoryServices();
 
     @PostMapping("")
-    Product addProduct(@RequestBody String serialNumber, @RequestBody String name, @RequestBody String vendor, @RequestBody String category, @RequestBody double price, @RequestBody int availableNumber){
+    Product addProduct(@RequestParam String serialNumber, @RequestParam String name, @RequestParam String vendor, @RequestParam String category, @RequestParam double price, @RequestParam int availableNumber){
         Product product = new Product(serialNumber, name, vendor, category, price, availableNumber);
+        System.out.println("Product after add : " + product);
         return productServices.addProduct(product);
     }
 
@@ -39,6 +40,8 @@ public class ProductController {
 
     @GetMapping("getAllProduct/")
     public List<Product> getAllProducts(){
-        return productServices.getAllProducts();
+        List<Product> products = productServices.getAllProducts();
+        System.out.println(products);
+        return products;
     }
 }
