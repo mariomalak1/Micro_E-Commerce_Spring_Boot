@@ -1,4 +1,4 @@
-package Models;
+package EcommerceSystem.ECommerce.Models;
 
 import java.util.List;
 

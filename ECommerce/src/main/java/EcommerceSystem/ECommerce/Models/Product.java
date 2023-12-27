@@ -1,4 +1,4 @@
-package Models;
+package EcommerceSystem.ECommerce.Models;
 
 public class Product {
     String SerialNumber;
@@ -7,6 +7,16 @@ public class Product {
     String Category;
     Double Price;
     Integer AvailableNumber;
+
+    public Product(String serialNumber, String name, String vendor, String category, Double price, Integer availableNumber) {
+        SerialNumber = serialNumber;
+        Name = name;
+        Vendor = vendor;
+        Category = category;
+        Price = price;
+        AvailableNumber = availableNumber;
+    }
+
 
     @Override
     public String toString() {
@@ -58,15 +68,6 @@ public class Product {
     }
 
     public void setAvailableNumber(Integer availableNumber) {
-        AvailableNumber = availableNumber;
-    }
-
-    public Product(String serialNumber, String name, String vendor, String category, Double price, Integer availableNumber) {
-        SerialNumber = serialNumber;
-        Name = name;
-        Vendor = vendor;
-        Category = category;
-        Price = price;
         AvailableNumber = availableNumber;
     }
 }

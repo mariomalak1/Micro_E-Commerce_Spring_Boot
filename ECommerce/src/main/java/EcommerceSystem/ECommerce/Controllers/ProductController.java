@@ -1,35 +1,24 @@
-package Controllers;
+package EcommerceSystem.ECommerce.Controllers;
 
-import Models.Product;
-import Services.*;
+import EcommerceSystem.ECommerce.Models.Product;
+import EcommerceSystem.ECommerce.Services.*;
 
 import java.util.List;
 
+import com.fasterxml.jackson.databind.node.BinaryNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/product/")
 public class ProductController {
 
-    public ProductController(){
-        System.out.println("from constructor");
-    }
-
     @Autowired
     IProductServices productServices = new ProductInMemoryServices();
 
     @PostMapping("")
-    public Product addProduct(){
-        System.out.println("marioo");
-        Product product = new Product("serial", "name", "vendor", "category", 12.0, 8);
+    Product addProduct(@RequestBody String serialNumber, @RequestBody String name, @RequestBody String vendor, @RequestBody String category, @RequestBody double price, @RequestBody int availableNumber){
+        Product product = new Product(serialNumber, name, vendor, category, price, availableNumber);
         return productServices.addProduct(product);
     }
 

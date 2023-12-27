@@ -1,9 +1,9 @@
-package Services;
+package EcommerceSystem.ECommerce.Services;
 
-import Models.Customer;
-import Models.Order;
-import Models.OrderItem;
-import Models.Product;
+import EcommerceSystem.ECommerce.Models.Customer;
+import EcommerceSystem.ECommerce.Models.Order;
+import EcommerceSystem.ECommerce.Models.OrderItem;
+import EcommerceSystem.ECommerce.Models.Product;
 
 import java.util.HashMap;
 

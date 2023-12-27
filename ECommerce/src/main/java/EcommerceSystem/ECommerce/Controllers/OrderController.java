@@ -1,7 +1,12 @@
-package Controllers;
+package EcommerceSystem.ECommerce.Controllers;
 
-import Models.*;
-import Services.*;
+import EcommerceSystem.ECommerce.Models.CompoundOrder;
+import EcommerceSystem.ECommerce.Models.Customer;
+import EcommerceSystem.ECommerce.Models.Order;
+import EcommerceSystem.ECommerce.Models.SingleOrder;
+import EcommerceSystem.ECommerce.Services.*;
+import EcommerceSystem.ECommerce.Models.*;
+import EcommerceSystem.ECommerce.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

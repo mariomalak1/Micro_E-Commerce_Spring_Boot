@@ -1,6 +1,6 @@
-package Services;
+package EcommerceSystem.ECommerce.Services;
 
-import Models.Product;
+import EcommerceSystem.ECommerce.Models.Product;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

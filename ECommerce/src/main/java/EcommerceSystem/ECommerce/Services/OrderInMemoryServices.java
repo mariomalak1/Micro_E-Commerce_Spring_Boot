@@ -1,7 +1,7 @@
-package Services;
+package EcommerceSystem.ECommerce.Services;
 
-import Models.Customer;
-import Models.Order;
+import EcommerceSystem.ECommerce.Models.Customer;
+import EcommerceSystem.ECommerce.Models.Order;
 
 import java.util.ArrayList;
 import java.util.List;

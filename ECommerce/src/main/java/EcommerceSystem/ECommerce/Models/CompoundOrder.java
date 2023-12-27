@@ -1,4 +1,4 @@
-package Models;
+package EcommerceSystem.ECommerce.Models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,6 @@ public class CompoundOrder extends Order {
         OrdersNumber++;
         OrderID = OrdersNumber;
         super.Customer = customer;
-        customer.addOrder(this);
         super.ParentOrder = null;
         super.orderItemList = new ArrayList<>();
         Orders = new ArrayList<>();

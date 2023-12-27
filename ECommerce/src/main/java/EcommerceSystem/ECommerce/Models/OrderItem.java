@@ -1,4 +1,4 @@
-package Models;
+package EcommerceSystem.ECommerce.Models;
 
 public class OrderItem {
     private static int OrderItemsNumber = 0;

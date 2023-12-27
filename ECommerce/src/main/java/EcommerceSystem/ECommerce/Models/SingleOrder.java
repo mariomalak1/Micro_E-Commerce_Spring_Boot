@@ -1,4 +1,4 @@
-package Models;
+package EcommerceSystem.ECommerce.Models;
 
 import java.util.ArrayList;
 
@@ -7,7 +7,6 @@ public class SingleOrder extends Order {
         OrdersNumber++;
         OrderID = OrdersNumber;
         super.Customer = customer;
-        customer.addOrder(this);
         super.ParentOrder = null;
         super.orderItemList = new ArrayList<>();
     }

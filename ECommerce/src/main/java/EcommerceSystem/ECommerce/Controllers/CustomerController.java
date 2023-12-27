@@ -1,10 +1,10 @@
-package Controllers;
+package EcommerceSystem.ECommerce.Controllers;
 
-import Models.Customer;
+import EcommerceSystem.ECommerce.Models.Customer;
 
 import org.springframework.http.ResponseEntity;
-import Services.CustomerInMemoryServices;
-import Services.ICustomerServices;
+import EcommerceSystem.ECommerce.Services.CustomerInMemoryServices;
+import EcommerceSystem.ECommerce.Services.ICustomerServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
