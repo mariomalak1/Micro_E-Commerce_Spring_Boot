@@ -23,6 +23,9 @@ public class SingleOrder extends Order {
 
     @Override
     public void finishOrder() {
+        // decrement the total price of the order from the customer
+        Double newBalance = getCustomer().getBalance() - getTotalPrice();
+        getCustomer().setBalance(newBalance);
         Finished = true;
     }
 

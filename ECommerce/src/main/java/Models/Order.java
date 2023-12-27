@@ -11,13 +11,23 @@ public abstract class Order {
     protected Boolean Finished;
 
 
+    // make the order finished and decrement the customer or customers balance
+    public abstract void finishOrder();
+
+    public Boolean isFinished(){
+        return Finished;
+    }
+
+
+    // getters setters
+
     public int getOrderID() {
         return OrderID;
     }
-
     public void setOrderID(int orderID) {
         OrderID = orderID;
     }
+
     public abstract double getTotalPrice();
 
     public Customer getCustomer() {
@@ -59,11 +69,5 @@ public abstract class Order {
             }
         }
         return null;
-    }
-
-    public abstract void finishOrder();
-
-    public Boolean isFinished(){
-        return Finished;
     }
 }

@@ -14,7 +14,6 @@ public class Customer {
     private Boolean Logged;
     private String Address;
 
-    private List<Order>orders;
     // list to hold all compound orders that need to confirm from the customer, if it confirmed will deleted from this list and add to the confirmed customers in compound order, and will added to orders
     private List<CompoundOrder>NeedConfirmOrders;
 
@@ -38,13 +37,34 @@ public class Customer {
         // id auto increment
         CustomersNumber++;
         CustomerID = CustomersNumber;
-        orders = new ArrayList<>();
         NeedConfirmOrders = new ArrayList<>();
     }
 
     public int getCustomerID() {
         return CustomerID;
     }
+
+    public Boolean isLogged(){
+        return Logged;
+    }
+
+    public void logout(){
+        Logged = false;
+    }
+
+    public void login(){
+        Logged = true;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Customer Data : ID -> " + " Name -> " + this.getName() + " Email -> " + this.getEmail() + " Balance -> " + getBalance();
+    }
+
+
+
+    // getters setters
 
     public void setCustomerID(int customerID) {
         CustomerID = customerID;
@@ -90,34 +110,6 @@ public class Customer {
         Balance = balance;
     }
 
-    public Boolean isLogged(){
-        return Logged;
-    }
-
-    public void logout(){
-        Logged = false;
-    }
-
-    public void login(){
-        Logged = true;
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
-    public void addOrder(Order order){
-        orders.add(order);
-    }
-
-    public void deleteOrder(Order order){
-        orders.remove(order);
-    }
-
     public List<CompoundOrder> getNeedConfirmOrders() {
         return NeedConfirmOrders;
     }
@@ -132,10 +124,5 @@ public class Customer {
 
     public void deleteNeedConfirmOrder(CompoundOrder order){
         NeedConfirmOrders.remove(order);
-    }
-
-    @Override
-    public String toString() {
-        return "Customer Data : ID -> " + " Name -> " + this.getName() + " Email -> " + this.getEmail() + " Balance -> " + getBalance();
     }
 }
