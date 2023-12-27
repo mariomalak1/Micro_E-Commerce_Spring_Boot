@@ -32,7 +32,6 @@ public class ProductInMemoryServices implements IProductServices{
     @Override
     public List<Product> getAllProducts() {
         Set<String> productsSerialNumber = DataBaseInMemory.productList.keySet();
-        System.out.println("Key set : " + productsSerialNumber);
         List<Product> productList = new ArrayList<>();
         for (String serial: productsSerialNumber){
             productList.add(DataBaseInMemory.productList.get(serial));

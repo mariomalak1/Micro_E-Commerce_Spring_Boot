@@ -21,7 +21,8 @@ public class Customer {
         return CustomersNumber;
     }
 
-    public Customer(String name, String password, String email, Double balance) {
+    public Customer(String name, String password, String email, Double balance, String address) {
+        Address = address;
         Name = name;
         Password = password;
         Email = email;
@@ -59,10 +60,8 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer Data : ID -> " + " Name -> " + this.getName() + " Email -> " + this.getEmail() + " Balance -> " + getBalance();
+        return "Customer Data : ID -> " + " Name -> " + this.getName() + " Email -> " + this.getEmail() + " Balance -> " + getBalance() + " Address -> " + getAddress();
     }
-
-
 
     // getters setters
 

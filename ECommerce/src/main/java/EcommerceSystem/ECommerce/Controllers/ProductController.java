@@ -19,8 +19,8 @@ public class ProductController {
     @PostMapping("")
     Product addProduct(@RequestParam String serialNumber, @RequestParam String name, @RequestParam String vendor, @RequestParam String category, @RequestParam double price, @RequestParam int availableNumber){
         Product product = new Product(serialNumber, name, vendor, category, price, availableNumber);
-        System.out.println("Product after add : " + product);
-        return productServices.addProduct(product);
+        productServices.addProduct(product);
+        return product;
     }
 
     @DeleteMapping("delete/{serial}")
@@ -38,10 +38,8 @@ public class ProductController {
         return productServices.getProduct(serial);
     }
 
-    @GetMapping("getAllProduct/")
+    @GetMapping("getAllProducts/")
     public List<Product> getAllProducts(){
-        List<Product> products = productServices.getAllProducts();
-        System.out.println(products);
-        return products;
+        return productServices.getAllProducts();
     }
 }

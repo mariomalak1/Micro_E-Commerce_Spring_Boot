@@ -9,12 +9,6 @@ public class Product {
     Integer AvailableNumber;
 
     public Product(String serialNumber, String name, String vendor, String category, Double price, Integer availableNumber) {
-        System.out.println("Before");
-        System.out.println(serialNumber);
-        System.out.println(name);
-        System.out.println(vendor);
-        System.out.println(category);
-        System.out.println("After");
         SerialNumber = serialNumber;
         Name = name;
         Vendor = vendor;

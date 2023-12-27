@@ -13,7 +13,8 @@ public class CustomerInMemoryServices implements ICustomerServices{
     public Customer addCustomer(Customer c) {
         // check that the customer is newly added
         if (DataBaseInMemory.customerList.get(c.getEmail()) == null){
-            return DataBaseInMemory.customerList.put(c.getEmail(), c);
+            DataBaseInMemory.customerList.put(c.getEmail(), c);
+            return c;
         }
         return null;
     }

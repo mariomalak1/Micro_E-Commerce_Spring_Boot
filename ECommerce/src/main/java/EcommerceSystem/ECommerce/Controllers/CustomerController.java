@@ -17,18 +17,21 @@ public class CustomerController {
     ICustomerServices customerServices = new CustomerInMemoryServices();
 
     @PostMapping("")
-    public ResponseEntity<Customer> createNewCustomer(@RequestBody String name, @RequestBody String password, @RequestBody String email, @RequestBody(required = false) double balance ){
-        Customer customer = new Customer(name, password, email, balance);
-        customerServices.addCustomer(customer);
-        return ResponseEntity.ok(customer);
+    public String createNewCustomer(@RequestParam String name, @RequestParam String password, @RequestParam String email, @RequestParam String address, @RequestParam(required = false) double balance ){
+        Customer customer = new Customer(name, password, email, balance, address);
+        customer = customerServices.addCustomer(customer);
+        if (customer == null){
+            return null;
+        }
+        return customer.toString();
     }
 
     @GetMapping("/login/")
-    public Customer logIn(@RequestBody String email, @RequestBody String password){
+    public String logIn(@RequestParam String email, @RequestParam String password){
         Customer customer = customerServices.getCustomer(email);
         if (customer != null){
             if (customer.getPassword().equals(password)){
-                return customer;
+                return customer.toString();
             }else{
                 return null;
             }
@@ -38,7 +41,7 @@ public class CustomerController {
     }
 
     @GetMapping("/getBalance/")
-    public Double getBalance(@RequestBody String email) {
+    public Double getBalance(@RequestParam String email) {
         Customer customer = customerServices.getCustomerIsLogged(email);
         if (customer != null){
             return customer.getBalance();
@@ -48,7 +51,7 @@ public class CustomerController {
     }
 
     @PostMapping("/putBalance/")
-    public Double setBalance(@RequestParam double balance, @RequestBody String email){
+    public Double setBalance(@RequestParam double balance, @RequestParam String email){
         Customer customer = customerServices.getCustomer(email);
         if (customer != null){
             if (customer.isLogged()){
@@ -68,9 +71,12 @@ public class CustomerController {
     }
 
     @PostMapping("/addBalance/")
-    public Double addBalance(@RequestBody String email, @RequestParam Double Balance){
+    public Double addBalance(@RequestParam String email, @RequestParam Double balance){
+        if (balance < 0 ){
+            return null;
+        }
         Customer customer = customerServices.getCustomer(email);
-        customer.setBalance(customer.getBalance() + Balance);
+        customer.setBalance(customer.getBalance() + balance);
         return customer.getBalance();
     }
 }
