@@ -39,15 +39,11 @@ public class CustomerController {
 
     @GetMapping("/getBalance/")
     public Double getBalance(@RequestBody String email) {
-        Customer customer = customerServices.getCustomer(email);
+        Customer customer = customerServices.getCustomerIsLogged(email);
         if (customer != null){
-            if (customer.isLogged()){
-                return customer.getBalance();
-            }else{
-                return 0.0;
-            }
+            return customer.getBalance();
         }else{
-            return 0.0;
+            return null;
         }
     }
 
@@ -71,5 +67,10 @@ public class CustomerController {
         return customerServices.getAllCustomers();
     }
 
-
+    @PostMapping("/addBalance/")
+    public Double addBalance(@RequestBody String email, @RequestParam Double Balance){
+        Customer customer = customerServices.getCustomer(email);
+        customer.setBalance(customer.getBalance() + Balance);
+        return customer.getBalance();
+    }
 }
