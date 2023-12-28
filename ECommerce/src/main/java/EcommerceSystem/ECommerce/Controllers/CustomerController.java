@@ -41,6 +41,15 @@ public class CustomerController {
         }
     }
 
+    @GetMapping("/getCustomer/")
+    public String getCustomer(@RequestParam String email){
+        Customer customer = customerServices.getCustomer(email);
+        if (customer != null) {
+            return customer.toString();
+        }
+        return "No Customer with this id.";
+    }
+
     @GetMapping("/getBalance/")
     public Double getBalance(@RequestParam String email) {
         Customer customer = customerServices.getCustomerIsLogged(email);

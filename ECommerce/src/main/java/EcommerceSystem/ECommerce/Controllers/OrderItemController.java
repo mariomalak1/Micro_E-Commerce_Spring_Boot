@@ -83,6 +83,7 @@ public class OrderItemController {
         if (orderItem.getOrder().isFinished()){
             return "This is finished order can't delete items from it.";
         }
+        orderItem.getOrder().removeOrderItem(orderItem);
         orderItem = orderItemServices.removeOrderItem(orderItem);
         if (orderItem == null){
             return "can't delete this item.";
