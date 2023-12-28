@@ -131,6 +131,10 @@ public class CompoundOrder extends Order {
         return null;
     }
 
+    public List<EcommerceSystem.ECommerce.Models.Customer> getConfirmedCustomers() {
+        return confirmedCustomers;
+    }
+
     public double totalPriceForOrderItemsOnly() {
         double total = 0;
         for (OrderItem o : orderItemList) {

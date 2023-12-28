@@ -46,18 +46,27 @@ public class OrderController {
         orderServices.addOrder(order);
         return order.toString();
     }
-    
+
     @PostMapping("/checkout/")
-    public Boolean checkout(@RequestParam String email){
+    public String checkout(@RequestParam String email){
         Customer customer = customerServices.getCustomerIsLogged(email);
         if (customer == null){
-            return null;
+            return "please login first.";
         }
         Order order = orderServices.getUnFinishedOrderForCustomer(customer);
         if (order == null){
-            return false;
+            return "No order created by this customer.";
         }
-        return order.finishOrder();
+        if (order instanceof CompoundOrder compoundOrder){
+            List<Customer> customerList = compoundOrder.getConfirmedCustomers();
+            if (customerList.size() != compoundOrder.getOrders().size()){
+                return "still some of your friends not confirm on the order.";
+            }
+        }
+        if (order.finishOrder()){
+            return "order finished";
+        }
+        return "can't  finish this order.";
     }
 
     @GetMapping("/getOrderForCustomer/")
