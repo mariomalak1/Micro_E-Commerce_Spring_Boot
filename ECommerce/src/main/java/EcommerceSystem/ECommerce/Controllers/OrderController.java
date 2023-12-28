@@ -5,6 +5,7 @@ import EcommerceSystem.ECommerce.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -45,7 +46,7 @@ public class OrderController {
         orderServices.addOrder(order);
         return order.toString();
     }
-
+    
     @PostMapping("/checkout/")
     public Boolean checkout(@RequestParam String email){
         Customer customer = customerServices.getCustomerIsLogged(email);
@@ -122,7 +123,11 @@ public class OrderController {
         if (customer == null){
             return null;
         }
-        return orderServices.getAllOrdersNeededToConfirmForCustomer(customer).toString();
+        List<CompoundOrder> compoundOrderList = orderServices.getAllOrdersNeededToConfirmForCustomer(customer);
+        if (compoundOrderList == null){
+            return new ArrayList<>().toString();
+        }
+        return compoundOrderList.toString();
     }
 
     @PostMapping("/ConfirmOrder/")
