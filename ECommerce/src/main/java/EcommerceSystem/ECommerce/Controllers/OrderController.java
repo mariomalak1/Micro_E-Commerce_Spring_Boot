@@ -83,26 +83,35 @@ public class OrderController {
             Order order1;
             order1 = orderServices.getOrder(compoundOrderID);
 
-            SingleOrder singleOrder = new SingleOrder(customer);
-
             if (order1 == null){
                 return "No Compound Order Created With This ID.";
             }
 
             if (order1 instanceof CompoundOrder compoundOrder){
-                compoundOrder.addOrder(singleOrder);
+                Order singleOrder = null;
                 compoundOrder = orderServices.addOrderNeedToConfirm(customer, compoundOrder.getOrderID());
+
                 if (compoundOrder == null){
                     return "Error  While Adding Order.";
                 }
-                orderServices.addOrder(singleOrder);
+
+                // add it to order list
+                for (Order o : compoundOrder.getOrders()){
+                    if (o.getCustomer() == customer){
+                        singleOrder = o;
+                    }
+                }
+                if (singleOrder == null){
+                    singleOrder = new SingleOrder(customer);
+                    compoundOrder.addOrder(singleOrder);
+                    orderServices.addOrder(singleOrder);
+                }
                 return compoundOrder.toString();
             }else{
                 return "This Order Not Compound Order.";
             }
         }
         catch (Exception e){
-            System.out.println("from catch.");
             return "Error While Adding To Compound Order.";
         }
     }

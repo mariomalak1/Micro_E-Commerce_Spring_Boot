@@ -42,9 +42,12 @@ public class OrderItemController {
         if (order == null){
             return "No Order with this id.";
         }
-
         if (order.getCustomer() != customer){
-            return "The Order Owner is not email provided.";
+            if (order.getParentOrder() != null){
+                if (order.getParentOrder().getCustomer() != customer){
+                    return "The Order Owner is not email provided.";
+                }
+            }
         }
 
         // check that the order not finished

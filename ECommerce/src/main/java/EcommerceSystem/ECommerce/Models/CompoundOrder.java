@@ -75,7 +75,11 @@ public class CompoundOrder extends Order {
     }
 
     public void addOrder(Order order) {
-        System.out.println("from adding order");
+        for (Order o :Orders) {
+            if (o == order){
+                return;
+            }
+        }
         order.setParentOrder(this);
         Orders.add(order);
     }

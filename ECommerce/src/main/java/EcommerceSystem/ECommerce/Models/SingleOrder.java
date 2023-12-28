@@ -37,7 +37,7 @@ public class SingleOrder extends Order {
         StringBuilder str = new StringBuilder();
         str.append("Order : ID -> ").append(getOrderID()).append(" Customer Email -> ").append(getCustomer().getEmail());
         if (ParentOrder != null){
-            str.append("Have Parent ID -> ").append(getParentOrder().getOrderID());
+            str.append(" Have Parent ID -> ").append(getParentOrder().getOrderID());
         }
         str.append("\n");
         for (OrderItem i: super.orderItemList) {
