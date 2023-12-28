@@ -54,10 +54,19 @@ public class OrderItemController {
         }
 
         OrderItem orderItem = new OrderItem(quantity, product, order);
+
+        if (customer.getBalance() < orderItem.getTotalPrice()){
+            return null;
+        }
+
         order.addOrderItem(orderItem);
         // minus the available number of this product
         int availableNumberOfProduct = product.getAvailableNumber() - quantity;
         product.setAvailableNumber(availableNumberOfProduct);
-        return orderItemServices.AddOrderItem(orderItem, order).toString();
+        orderItem = orderItemServices.AddOrderItem(orderItem, order);
+        if (orderItem == null){
+            return null;
+        }
+        return orderItem.toString();
     }
 }
