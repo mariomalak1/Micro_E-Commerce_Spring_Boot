@@ -145,7 +145,17 @@ public class OrderController {
         if (customer == null){
             return null;
         }
-        return orderServices.confirmOrderByCustomer(customer, orderID).toString();
+
+        Order order = orderServices.getOrder(orderID);
+        if (order == null){
+            return "No order with this id.";
+        }
+        if (order instanceof CompoundOrder compoundOrder){
+            compoundOrder = orderServices.confirmOrderByCustomer(customer, orderID);
+            return compoundOrder.toString();
+        }else{
+            return "It's not compound order.";
+        }
     }
 
     @DeleteMapping("/delete/")
