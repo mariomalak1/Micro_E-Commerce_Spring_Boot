@@ -1,5 +1,6 @@
 package EcommerceSystem.ECommerce.Services;
 
+import EcommerceSystem.ECommerce.Models.CompoundOrder;
 import EcommerceSystem.ECommerce.Models.Customer;
 import EcommerceSystem.ECommerce.Models.Order;
 
@@ -47,10 +48,55 @@ public class OrderInMemoryServices implements IOrderServices{
     public Order getUnFinishedOrderForCustomer(Customer customer) {
         List<Order> orders = getAllOrdersForCustomer(customer);
         for (Order order : orders){
-            if (!order.isFinished()){
+            if (!order.isFinished() && order.getParentOrder() == null){
                 return order;
             }
         }
         return null;
+    }
+
+    @Override
+    public List<CompoundOrder> getAllOrdersNeededToConfirmForCustomer(Customer customer) {
+        return DataBaseInMemory.orderNeededToConfirm.get(customer);
+    }
+
+    @Override
+    public CompoundOrder confirmOrderByCustomer(Customer customer, int orderID){
+        List<CompoundOrder> orders = DataBaseInMemory.orderNeededToConfirm.get(customer);
+        for (CompoundOrder o : orders) {
+            if (o.getOrderID() == orderID){
+                orders.remove(o);
+                DataBaseInMemory.orderNeededToConfirm.put(customer, orders);
+                return o;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public CompoundOrder addOrderNeedToConfirm(Customer customer, int compoundOrderID){
+        Order order = getOrder(compoundOrderID);
+        if (order instanceof CompoundOrder compoundOrder){
+            List<CompoundOrder> compoundOrders = DataBaseInMemory.orderNeededToConfirm.get(customer);
+            if (compoundOrders == null){
+                compoundOrders = new ArrayList<>();
+                addIsNewInList(compoundOrders, compoundOrder);
+                DataBaseInMemory.orderNeededToConfirm.put(customer, compoundOrders);
+            }else{
+
+                compoundOrders.add(compoundOrder);
+            }
+            return compoundOrder;
+        }
+        return null;
+    }
+
+    <T> void addIsNewInList(List<T> list, T entity){
+        for (T i : list){
+            if (i == entity){
+                return;
+            }
+        }
+        list.add(entity);
     }
 }

@@ -33,17 +33,18 @@ public class CompoundOrder extends Order {
     }
 
     @Override
-    public void finishOrder() {
+    public Boolean finishOrder() {
         double newBalance;
         for (Order o: Orders) {
-            // decrement the total price of the order from the customer
-            newBalance = o.getCustomer().getBalance() - o.getTotalPrice();
-            o.getCustomer().setBalance(newBalance);
-            o.finishOrder();
+            // decrement the total price of the order from the customer and finish it
+            if(!o.finishOrder()){
+                return false;
+            }
         }
         newBalance = getCustomer().getBalance() - totalPriceForOrderItemsOnly();
         getCustomer().setBalance(newBalance);
         Finished = true;
+        return true;
     }
 
     @Override
@@ -57,7 +58,7 @@ public class CompoundOrder extends Order {
         }
         for (Order o: this.Orders) {
             str.append("\t");
-            str.append(o);
+            str.append(o.toString());
             str.append("\n");
         }
         return str.toString();
@@ -74,7 +75,11 @@ public class CompoundOrder extends Order {
     }
 
     public void addOrder(Order order) {
-        System.out.println("from adding order");
+        for (Order o :Orders) {
+            if (o == order){
+                return;
+            }
+        }
         order.setParentOrder(this);
         Orders.add(order);
     }

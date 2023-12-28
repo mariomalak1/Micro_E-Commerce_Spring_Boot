@@ -21,11 +21,15 @@ public class SingleOrder extends Order {
     }
 
     @Override
-    public void finishOrder() {
+    public Boolean finishOrder() {
         // decrement the total price of the order from the customer
-        Double newBalance = getCustomer().getBalance() - getTotalPrice();
+        double newBalance = getCustomer().getBalance() - getTotalPrice();
+        if (newBalance < 0){
+            return false;
+        }
         getCustomer().setBalance(newBalance);
         Finished = true;
+        return true;
     }
 
     @Override
@@ -33,7 +37,7 @@ public class SingleOrder extends Order {
         StringBuilder str = new StringBuilder();
         str.append("Order : ID -> ").append(getOrderID()).append(" Customer Email -> ").append(getCustomer().getEmail());
         if (ParentOrder != null){
-            str.append("Have Parent ID -> ").append(getParentOrder().getOrderID());
+            str.append(" Have Parent ID -> ").append(getParentOrder().getOrderID());
         }
         str.append("\n");
         for (OrderItem i: super.orderItemList) {

@@ -19,45 +19,78 @@ public class OrderItemController {
     @Autowired
     IProductServices productServices = new ProductInMemoryServices();
 
+    @Autowired
     IOrderItemServices orderItemServices = new OrderItemInMemoryServices();
 
     @PostMapping("")
-    public OrderItem addItemInOrder(@RequestParam String email, @RequestParam String productSerialNumber, @RequestParam int orderID, @RequestParam Integer quantity){
+    public String addItemInOrder(@RequestParam String email, @RequestParam String productSerialNumber, @RequestParam int orderID, @RequestParam Integer quantity){
 
         // check if the customer is found and is logged
         Customer customer = customerServices.getCustomerIsLogged(email);
         if (customer == null){
-            return null;
+            return "No Customer With This ID.";
         }
 
         // check that product is found
         Product product = productServices.getProduct(productSerialNumber);
         if (product == null){
-            return null;
+            return "No Product With This ID.";
         }
 
         // check that order id his provide it is found
         Order order = orderServices.getOrder(orderID);
         if (order == null){
-            return null;
+            return "No Order with this id.";
+        }
+        if (order.getCustomer() != customer){
+            if (order.getParentOrder() != null){
+                if (order.getParentOrder().getCustomer() != customer){
+                    return "The Order Owner is not email provided.";
+                }
+            }
         }
 
         // check that the order not finished
         if (order.isFinished()){
-            return null;
+            return "This  is finished order can't add to it.";
         }
 
         // check that quantity he needs is less than or equal the available number of product
         if (quantity > product.getAvailableNumber()){
-            return null;
+            return "Sorry, We Have Less Quantity than you need in this product.";
         }
 
-        // minus the available number of this product
         OrderItem orderItem = new OrderItem(quantity, product, order);
+
+        if (customer.getBalance() < orderItem.getTotalPrice()){
+            return "Sorry, your balance is not enough.";
+        }
+
+        order.addOrderItem(orderItem);
+        // minus the available number of this product
         int availableNumberOfProduct = product.getAvailableNumber() - quantity;
         product.setAvailableNumber(availableNumberOfProduct);
-        return orderItemServices.AddOrderItem(orderItem, order);
+        orderItem = orderItemServices.AddOrderItem(orderItem, order);
+        if (orderItem == null){
+            return "Error While Create Add Your Item.";
+        }
+        return orderItem.toString();
     }
 
-
+    @DeleteMapping("delete/{id}")
+    public String addItemInOrder(@PathVariable int id){
+        OrderItem orderItem = orderItemServices.getOrderItem(id);
+        if (orderItem == null){
+            return "No Order Item with this ID.";
+        }
+        if (orderItem.getOrder().isFinished()){
+            return "This is finished order can't delete items from it.";
+        }
+        orderItem.getOrder().removeOrderItem(orderItem);
+        orderItem = orderItemServices.removeOrderItem(orderItem);
+        if (orderItem == null){
+            return "can't delete this item.";
+        }
+        return "Order item delete successfully.";
+    }
 }

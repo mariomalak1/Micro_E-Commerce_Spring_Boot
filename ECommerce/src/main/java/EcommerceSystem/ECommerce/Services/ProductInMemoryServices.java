@@ -13,10 +13,11 @@ public class ProductInMemoryServices implements IProductServices{
     @Override
     public Product addProduct(Product p) {
         // check that the customer is newly added
-        if (DataBaseInMemory.productList.get(p.getSerialNumber()) == null){
+        Product product = DataBaseInMemory.productList.get(p.getSerialNumber());
+        if (product == null){
             return DataBaseInMemory.productList.put(p.getSerialNumber(), p);
         }
-        return null;
+        return product;
     }
 
     @Override

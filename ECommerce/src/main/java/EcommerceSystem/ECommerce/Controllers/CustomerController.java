@@ -2,6 +2,7 @@ package EcommerceSystem.ECommerce.Controllers;
 
 import EcommerceSystem.ECommerce.Models.Customer;
 
+import EcommerceSystem.ECommerce.Models.Order;
 import org.springframework.http.ResponseEntity;
 import EcommerceSystem.ECommerce.Services.CustomerInMemoryServices;
 import EcommerceSystem.ECommerce.Services.ICustomerServices;
@@ -38,6 +39,15 @@ public class CustomerController {
         }else{
             return null;
         }
+    }
+
+    @GetMapping("/getCustomer/")
+    public String getCustomer(@RequestParam String email){
+        Customer customer = customerServices.getCustomer(email);
+        if (customer != null) {
+            return customer.toString();
+        }
+        return "No Customer with this id.";
     }
 
     @GetMapping("/getBalance/")

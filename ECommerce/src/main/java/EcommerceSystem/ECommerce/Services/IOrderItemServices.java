@@ -1,5 +1,7 @@
 package EcommerceSystem.ECommerce.Services;
 
+import EcommerceSystem.ECommerce.Models.CompoundOrder;
+import EcommerceSystem.ECommerce.Models.Customer;
 import EcommerceSystem.ECommerce.Models.Order;
 import EcommerceSystem.ECommerce.Models.OrderItem;
 
