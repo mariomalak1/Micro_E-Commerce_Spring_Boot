@@ -19,7 +19,6 @@ public class OrderItemController {
     @Autowired
     IProductServices productServices = new ProductInMemoryServices();
 
-    @Autowired
     IOrderItemServices orderItemServices = new OrderItemInMemoryServices();
 
     @PostMapping("")
