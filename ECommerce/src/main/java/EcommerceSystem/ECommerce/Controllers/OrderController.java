@@ -138,6 +138,16 @@ public class OrderController {
         if (order == null){
             return "Can't delete this order.";
         }
-        return "Order Deleted Successfully.";
+        if (order instanceof CompoundOrder compoundOrder){
+            for (Order o : compoundOrder.getOrders()){
+                // to delete it from need confirm orders
+                orderServices.confirmOrderByCustomer(o.getCustomer(), compoundOrder.getOrderID());
+                // delete all single orders that in this
+                orderServices.deleteOrder(o);
+            }
+            return "Order Deleted Successfully With all of it's orders.";
+        }else{
+            return "Order Deleted Successfully.";
+        }
     }
 }
