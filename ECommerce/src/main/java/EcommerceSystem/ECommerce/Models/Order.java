@@ -15,6 +15,9 @@ public abstract class Order {
     public abstract void finishOrder();
 
     public Boolean isFinished(){
+        if (Finished == null){
+            return false;
+        }
         return Finished;
     }
 

@@ -13,7 +13,11 @@ import org.springframework.stereotype.Service;
 public class OrderInMemoryServices implements IOrderServices{
     @Override
     public Order addOrder(Order o) {
-        return DataBaseInMemory.orderList.put(o.getOrderID(), o);
+        Order order = DataBaseInMemory.orderList.get(o.getOrderID());
+        if (order == null){
+            return DataBaseInMemory.orderList.put(o.getOrderID(), o);
+        }
+        return order;
     }
 
     @Override

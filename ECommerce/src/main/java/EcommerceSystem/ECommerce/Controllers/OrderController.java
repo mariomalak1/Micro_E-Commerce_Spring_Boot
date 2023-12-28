@@ -1,10 +1,5 @@
 package EcommerceSystem.ECommerce.Controllers;
 
-import EcommerceSystem.ECommerce.Models.CompoundOrder;
-import EcommerceSystem.ECommerce.Models.Customer;
-import EcommerceSystem.ECommerce.Models.Order;
-import EcommerceSystem.ECommerce.Models.SingleOrder;
-import EcommerceSystem.ECommerce.Services.*;
 import EcommerceSystem.ECommerce.Models.*;
 import EcommerceSystem.ECommerce.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +18,7 @@ public class OrderController {
     IProductServices productServices = new ProductInMemoryServices();
 
     @PostMapping("")
-    public Order createNewOrder(@RequestBody String email, @RequestParam(required = false) Boolean composite){
+    public Order createNewOrder(@RequestParam String email, @RequestParam(required = false) Boolean composite){
         Order order;
         Customer customer = customerServices.getCustomerIsLogged(email);
         if (customer == null){
@@ -36,6 +31,10 @@ public class OrderController {
             return o;
         }
 
+        if (composite == null){
+            composite = false;
+        }
+
         if (composite){
             order = new CompoundOrder(customer);
         }else{
@@ -46,7 +45,7 @@ public class OrderController {
     }
 
     @PostMapping("/checkout/")
-    public Boolean checkout(@RequestBody String email){
+    public Boolean checkout(@RequestParam String email){
         Customer customer = customerServices.getCustomerIsLogged(email);
         if (customer == null){
             return null;
@@ -57,7 +56,7 @@ public class OrderController {
     }
 
     @GetMapping("/getOrderForCustomer/")
-    public Order getOrder(@RequestBody String email){
+    public Order getOrder(@RequestParam String email){
         Customer customer = customerServices.getCustomer(email);
         if (customer == null){
             return null;
@@ -66,7 +65,7 @@ public class OrderController {
     }
 
     @PostMapping("/addOrderToCompound")
-    public Order addOrderToCompound(@RequestBody int compoundOrderID, @RequestBody int singleOrderID){
+    public Order addOrderToCompound(@RequestParam int compoundOrderID, @RequestParam int singleOrderID){
         try {
             CompoundOrder compoundOrder;
             Order singleOrder, order1;
