@@ -1,6 +1,7 @@
 package EcommerceSystem.ECommerce.Models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SingleOrder extends Order {
     public SingleOrder(Customer customer){
@@ -30,6 +31,15 @@ public class SingleOrder extends Order {
         getCustomer().setBalance(newBalance);
         Finished = true;
         return true;
+    }
+
+    @Override
+    public List<Product> getAllProductsInTheOrder() {
+        List<Product> productList = new ArrayList<>();
+        for (OrderItem orderItem: super.orderItemList) {
+            productList.add(orderItem.getProduct());
+        }
+        return productList;
     }
 
     @Override

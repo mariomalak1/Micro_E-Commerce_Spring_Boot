@@ -24,6 +24,8 @@ public abstract class Order {
 
     // getters setters
 
+    public abstract List<Product> getAllProductsInTheOrder();
+
     public int getOrderID() {
         return OrderID;
     }
