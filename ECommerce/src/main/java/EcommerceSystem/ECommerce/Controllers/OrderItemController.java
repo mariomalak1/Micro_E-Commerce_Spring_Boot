@@ -28,39 +28,39 @@ public class OrderItemController {
         // check if the customer is found and is logged
         Customer customer = customerServices.getCustomerIsLogged(email);
         if (customer == null){
-            return null;
+            return "No Customer With This ID.";
         }
 
         // check that product is found
         Product product = productServices.getProduct(productSerialNumber);
         if (product == null){
-            return null;
+            return "No Product With This ID.";
         }
 
         // check that order id his provide it is found
         Order order = orderServices.getOrder(orderID);
         if (order == null){
-            return null;
+            return "No Order with this id.";
         }
 
         if (order.getCustomer() != customer){
-            return null;
+            return "The Order Owner is not email provided.";
         }
 
         // check that the order not finished
         if (order.isFinished()){
-            return null;
+            return "This  is finished order can't add to it.";
         }
 
         // check that quantity he needs is less than or equal the available number of product
         if (quantity > product.getAvailableNumber()){
-            return null;
+            return "Sorry, We Have Less Quantity than you need in this product.";
         }
 
         OrderItem orderItem = new OrderItem(quantity, product, order);
 
         if (customer.getBalance() < orderItem.getTotalPrice()){
-            return null;
+            return "Sorry, your balance is not enough.";
         }
 
         order.addOrderItem(orderItem);
@@ -69,7 +69,7 @@ public class OrderItemController {
         product.setAvailableNumber(availableNumberOfProduct);
         orderItem = orderItemServices.AddOrderItem(orderItem, order);
         if (orderItem == null){
-            return null;
+            return "Error While Create Add Your Item.";
         }
         return orderItem.toString();
     }

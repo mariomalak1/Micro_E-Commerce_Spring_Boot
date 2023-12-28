@@ -84,8 +84,8 @@ public class OrderInMemoryServices implements IOrderServices{
                 DataBaseInMemory.orderNeededToConfirm.put(customer, compoundOrders);
             }else{
                 compoundOrders.add(compoundOrder);
-                return compoundOrder;
             }
+            return compoundOrder;
         }
         return null;
     }

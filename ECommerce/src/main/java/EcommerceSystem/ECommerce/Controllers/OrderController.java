@@ -77,7 +77,7 @@ public class OrderController {
         try {
             Customer customer = customerServices.getCustomer(emailOfFriend);
             if (customer == null){
-                return null;
+                return "No Customer With This Email.";
             }
 
             Order order1;
@@ -86,23 +86,24 @@ public class OrderController {
             SingleOrder singleOrder = new SingleOrder(customer);
 
             if (order1 == null){
-                return null;
+                return "No Compound Order Created With This ID.";
             }
 
             if (order1 instanceof CompoundOrder compoundOrder){
                 compoundOrder.addOrder(singleOrder);
-                compoundOrder = orderServices.addOrderNeedToConfirm(compoundOrder.getCustomer(), compoundOrderID);
+                compoundOrder = orderServices.addOrderNeedToConfirm(customer, compoundOrder.getOrderID());
                 if (compoundOrder == null){
-                    return null;
+                    return "Error  While Adding Order.";
                 }
-                orderServices.addOrderNeedToConfirm(customer, compoundOrder.getOrderID());
+                orderServices.addOrder(singleOrder);
                 return compoundOrder.toString();
             }else{
-                return null;
+                return "This Order Not Compound Order.";
             }
         }
         catch (Exception e){
-            return null;
+            System.out.println("from catch.");
+            return "Error While Adding To Compound Order.";
         }
     }
 
@@ -115,12 +116,28 @@ public class OrderController {
         return orderServices.getAllOrdersNeededToConfirmForCustomer(customer).toString();
     }
 
-    @PostMapping("ConfirmOrder")
+    @PostMapping("/ConfirmOrder/")
     public String confirmOrderByCustomer(@RequestParam String email, @RequestParam int orderID){
         Customer customer = customerServices.getCustomerIsLogged(email);
         if (customer == null){
             return null;
         }
         return orderServices.confirmOrderByCustomer(customer, orderID).toString();
+    }
+
+    @DeleteMapping("/delete/")
+    public String deleteOrder(@RequestParam int orderID){
+        Order order = orderServices.getOrder(orderID);
+        if (order == null){
+            return "No order with this id.";
+        }
+        if (order.isFinished()){
+            return "This order is finished can't delete it.";
+        }
+        order = orderServices.deleteOrder(order);
+        if (order == null){
+            return "Can't delete this order.";
+        }
+        return "Order Deleted Successfully.";
     }
 }
