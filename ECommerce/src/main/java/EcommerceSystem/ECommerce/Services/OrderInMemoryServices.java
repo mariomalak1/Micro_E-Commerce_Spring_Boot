@@ -80,13 +80,23 @@ public class OrderInMemoryServices implements IOrderServices{
             List<CompoundOrder> compoundOrders = DataBaseInMemory.orderNeededToConfirm.get(customer);
             if (compoundOrders == null){
                 compoundOrders = new ArrayList<>();
-                compoundOrders.add(compoundOrder);
+                addIsNewInList(compoundOrders, compoundOrder);
                 DataBaseInMemory.orderNeededToConfirm.put(customer, compoundOrders);
             }else{
+
                 compoundOrders.add(compoundOrder);
             }
             return compoundOrder;
         }
         return null;
+    }
+
+    <T> void addIsNewInList(List<T> list, T entity){
+        for (T i : list){
+            if (i == entity){
+                return;
+            }
+        }
+        list.add(entity);
     }
 }

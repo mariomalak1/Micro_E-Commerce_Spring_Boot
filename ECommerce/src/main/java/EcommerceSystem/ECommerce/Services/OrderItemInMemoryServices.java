@@ -15,11 +15,12 @@ public class OrderItemInMemoryServices implements IOrderItemServices{
     @Override
     public OrderItem AddOrderItem(OrderItem orderItem, Order order) {
         // check that the order item is newly added
-        if (DataBaseInMemory.orderItemList.get(orderItem.getID()) == null){
+        OrderItem orderItem1 = DataBaseInMemory.orderItemList.get(orderItem.getID());
+        if (orderItem1 == null){
             DataBaseInMemory.orderItemList.put(orderItem.getID(), orderItem);
             return orderItem;
         }
-        return null;
+        return orderItem1;
     }
 
     @Override

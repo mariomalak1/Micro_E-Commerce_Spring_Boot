@@ -13,11 +13,12 @@ public class CustomerInMemoryServices implements ICustomerServices{
     @Override
     public Customer addCustomer(Customer c) {
         // check that the customer is newly added
-        if (DataBaseInMemory.customerList.get(c.getEmail()) == null){
+        Customer customer = DataBaseInMemory.customerList.get(c.getEmail());
+        if (customer == null){
             DataBaseInMemory.customerList.put(c.getEmail(), c);
             return c;
         }
-        return null;
+        return customer;
     }
 
     @Override

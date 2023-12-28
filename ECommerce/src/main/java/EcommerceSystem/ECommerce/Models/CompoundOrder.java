@@ -58,7 +58,7 @@ public class CompoundOrder extends Order {
         }
         for (Order o: this.Orders) {
             str.append("\t");
-            str.append(o);
+            str.append(o.toString());
             str.append("\n");
         }
         return str.toString();
