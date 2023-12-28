@@ -19,10 +19,11 @@ public class OrderItemController {
     @Autowired
     IProductServices productServices = new ProductInMemoryServices();
 
+    @Autowired
     IOrderItemServices orderItemServices = new OrderItemInMemoryServices();
 
     @PostMapping("")
-    public OrderItem addItemInOrder(@RequestParam String email, @RequestParam String productSerialNumber, @RequestParam int orderID, @RequestParam Integer quantity){
+    public String addItemInOrder(@RequestParam String email, @RequestParam String productSerialNumber, @RequestParam int orderID, @RequestParam Integer quantity){
 
         // check if the customer is found and is logged
         Customer customer = customerServices.getCustomerIsLogged(email);
@@ -52,12 +53,11 @@ public class OrderItemController {
             return null;
         }
 
-        // minus the available number of this product
         OrderItem orderItem = new OrderItem(quantity, product, order);
+        order.addOrderItem(orderItem);
+        // minus the available number of this product
         int availableNumberOfProduct = product.getAvailableNumber() - quantity;
         product.setAvailableNumber(availableNumberOfProduct);
-        return orderItemServices.AddOrderItem(orderItem, order);
+        return orderItemServices.AddOrderItem(orderItem, order).toString();
     }
-
-
 }

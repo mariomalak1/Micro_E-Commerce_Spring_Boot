@@ -56,12 +56,12 @@ public class OrderController {
     }
 
     @GetMapping("/getOrderForCustomer/")
-    public Order getOrder(@RequestParam String email){
+    public String getOrder(@RequestParam String email){
         Customer customer = customerServices.getCustomer(email);
         if (customer == null){
             return null;
         }
-        return orderServices.getUnFinishedOrderForCustomer(customer);
+        return orderServices.getUnFinishedOrderForCustomer(customer).toString();
     }
 
     @PostMapping("/addOrderToCompound")
