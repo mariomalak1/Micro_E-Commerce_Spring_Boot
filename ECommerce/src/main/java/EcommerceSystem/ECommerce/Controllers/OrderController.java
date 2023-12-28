@@ -5,6 +5,8 @@ import EcommerceSystem.ECommerce.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/orders/")
 public class OrderController {
@@ -18,7 +20,7 @@ public class OrderController {
     IProductServices productServices = new ProductInMemoryServices();
 
     @PostMapping("")
-    public Order createNewOrder(@RequestParam String email, @RequestParam(required = false) Boolean composite){
+    public String createNewOrder(@RequestParam String email, @RequestParam(required = false) Boolean composite){
         Order order;
         Customer customer = customerServices.getCustomerIsLogged(email);
         if (customer == null){
@@ -28,7 +30,7 @@ public class OrderController {
         // get the old order he was unfinished it
         Order o = orderServices.getUnFinishedOrderForCustomer(customer);
         if (o != null){
-            return o;
+            return o.toString();
         }
 
         if (composite == null){
@@ -41,7 +43,7 @@ public class OrderController {
             order = new SingleOrder(customer);
         }
         orderServices.addOrder(order);
-        return order;
+        return order.toString();
     }
 
     @PostMapping("/checkout/")
@@ -51,8 +53,10 @@ public class OrderController {
             return null;
         }
         Order order = orderServices.getUnFinishedOrderForCustomer(customer);
-        order.finishOrder();
-        return true;
+        if (order == null){
+            return false;
+        }
+        return order.finishOrder();
     }
 
     @GetMapping("/getOrderForCustomer/")
@@ -61,7 +65,11 @@ public class OrderController {
         if (customer == null){
             return null;
         }
-        return orderServices.getUnFinishedOrderForCustomer(customer).toString();
+        Order order = orderServices.getUnFinishedOrderForCustomer(customer);
+        if (order == null){
+            return null;
+        }
+        return order.toString();
     }
 
     @PostMapping("/addOrderToCompound")
@@ -91,5 +99,14 @@ public class OrderController {
         catch (Exception e){
             return null;
         }
+    }
+
+    @GetMapping("/")
+    public String getAllOrdersNeededToConfirmToCustomer(@RequestParam String email){
+        Customer customer = customerServices.getCustomerIsLogged(email);
+        if (customer == null){
+            return null;
+        }
+//        return customer.getNeedConfirmOrders().toString();
     }
 }

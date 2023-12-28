@@ -1,6 +1,7 @@
 package EcommerceSystem.ECommerce.Services;
 
 import EcommerceSystem.ECommerce.Models.Customer;
+import EcommerceSystem.ECommerce.Models.Order;
 
 import java.util.List;
 
@@ -11,3 +12,4 @@ public interface ICustomerServices {
     List<Customer> getAllCustomers();
     Customer getCustomerIsLogged(String emails);
 }
+

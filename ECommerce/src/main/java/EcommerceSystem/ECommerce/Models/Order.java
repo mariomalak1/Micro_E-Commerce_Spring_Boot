@@ -12,7 +12,7 @@ public abstract class Order {
 
 
     // make the order finished and decrement the customer or customers balance
-    public abstract void finishOrder();
+    public abstract Boolean finishOrder();
 
     public Boolean isFinished(){
         if (Finished == null){

@@ -15,7 +15,6 @@ public class Customer {
     private String Address;
 
     // list to hold all compound orders that need to confirm from the customer, if it confirmed will deleted from this list and add to the confirmed customers in compound order, and will added to orders
-    private List<CompoundOrder>NeedConfirmOrders;
 
     public static int getCustomersNumber() {
         return CustomersNumber;
@@ -38,7 +37,6 @@ public class Customer {
         // id auto increment
         CustomersNumber++;
         CustomerID = CustomersNumber;
-        NeedConfirmOrders = new ArrayList<>();
     }
 
     public int getCustomerID() {
@@ -107,21 +105,5 @@ public class Customer {
 
     public void setBalance(Double balance) {
         Balance = balance;
-    }
-
-    public List<CompoundOrder> getNeedConfirmOrders() {
-        return NeedConfirmOrders;
-    }
-
-    public void setNeedConfirmOrders(List<CompoundOrder> needConfirmOrders) {
-        NeedConfirmOrders = needConfirmOrders;
-    }
-
-    public void addNeedConfirmOrder(CompoundOrder order){
-        NeedConfirmOrders.add(order);
-    }
-
-    public void deleteNeedConfirmOrder(CompoundOrder order){
-        NeedConfirmOrders.remove(order);
     }
 }

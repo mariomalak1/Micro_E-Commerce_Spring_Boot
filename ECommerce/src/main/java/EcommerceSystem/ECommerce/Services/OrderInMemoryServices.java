@@ -1,5 +1,6 @@
 package EcommerceSystem.ECommerce.Services;
 
+import EcommerceSystem.ECommerce.Models.CompoundOrder;
 import EcommerceSystem.ECommerce.Models.Customer;
 import EcommerceSystem.ECommerce.Models.Order;
 
@@ -49,6 +50,41 @@ public class OrderInMemoryServices implements IOrderServices{
         for (Order order : orders){
             if (!order.isFinished()){
                 return order;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<CompoundOrder> getAllOrdersNeededToConfirmForCustomer(Customer customer) {
+        return DataBaseInMemory.orderNeededToConfirm.get(customer);
+    }
+
+    @Override
+    public CompoundOrder confirmOrderByCustomer(Customer customer, int orderID){
+        List<CompoundOrder> orders = DataBaseInMemory.orderNeededToConfirm.get(customer);
+        for (CompoundOrder o : orders) {
+            if (o.getOrderID() == orderID){
+                orders.remove(o);
+                DataBaseInMemory.orderNeededToConfirm.put(customer, orders);
+                return o;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public CompoundOrder addOrderNeedToConfirm(Customer customer, int orderID){
+        Order order = getOrder(orderID);
+        if (order instanceof CompoundOrder compoundOrder){
+            List<CompoundOrder> compoundOrders = DataBaseInMemory.orderNeededToConfirm.get(customer);
+            if (compoundOrders == null){
+                compoundOrders = new ArrayList<>();
+                compoundOrders.add(compoundOrder);
+                DataBaseInMemory.orderNeededToConfirm.put(customer, compoundOrders);
+            }else{
+                compoundOrders.add(compoundOrder);
+                return compoundOrder;
             }
         }
         return null;
