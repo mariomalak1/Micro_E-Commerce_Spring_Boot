@@ -43,6 +43,10 @@ public class OrderItemController {
             return null;
         }
 
+        if (order.getCustomer() != customer){
+            return null;
+        }
+
         // check that the order not finished
         if (order.isFinished()){
             return null;
@@ -68,5 +72,21 @@ public class OrderItemController {
             return null;
         }
         return orderItem.toString();
+    }
+
+    @DeleteMapping("delete/{id}")
+    public String addItemInOrder(@PathVariable int id){
+        OrderItem orderItem = orderItemServices.getOrderItem(id);
+        if (orderItem == null){
+            return "No Order Item with this ID.";
+        }
+        if (orderItem.getOrder().isFinished()){
+            return "This is finished order can't delete items from it.";
+        }
+        orderItem = orderItemServices.removeOrderItem(orderItem);
+        if (orderItem == null){
+            return "can't delete this item.";
+        }
+        return "Order item delete successfully.";
     }
 }
