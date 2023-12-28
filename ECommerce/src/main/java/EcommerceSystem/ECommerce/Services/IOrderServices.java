@@ -17,5 +17,5 @@ public interface IOrderServices {
     List<CompoundOrder>getAllOrdersNeededToConfirmForCustomer(Customer customer);
     CompoundOrder addOrderNeedToConfirm(Customer customer, int orderID);
 
-    CompoundOrder confirmOrderByCustomer(Customer customer, int orderID);
+    CompoundOrder confirmOrderByCustomer(Customer customer, int compoundOrderID);
 }

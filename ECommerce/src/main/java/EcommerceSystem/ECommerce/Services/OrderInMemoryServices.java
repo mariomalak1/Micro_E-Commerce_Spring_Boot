@@ -48,7 +48,7 @@ public class OrderInMemoryServices implements IOrderServices{
     public Order getUnFinishedOrderForCustomer(Customer customer) {
         List<Order> orders = getAllOrdersForCustomer(customer);
         for (Order order : orders){
-            if (!order.isFinished()){
+            if (!order.isFinished() && order.getParentOrder() == null){
                 return order;
             }
         }
@@ -74,8 +74,8 @@ public class OrderInMemoryServices implements IOrderServices{
     }
 
     @Override
-    public CompoundOrder addOrderNeedToConfirm(Customer customer, int orderID){
-        Order order = getOrder(orderID);
+    public CompoundOrder addOrderNeedToConfirm(Customer customer, int compoundOrderID){
+        Order order = getOrder(compoundOrderID);
         if (order instanceof CompoundOrder compoundOrder){
             List<CompoundOrder> compoundOrders = DataBaseInMemory.orderNeededToConfirm.get(customer);
             if (compoundOrders == null){

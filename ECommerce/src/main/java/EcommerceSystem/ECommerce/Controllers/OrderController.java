@@ -73,25 +73,30 @@ public class OrderController {
     }
 
     @PostMapping("/addOrderToCompound")
-    public Order addOrderToCompound(@RequestParam int compoundOrderID, @RequestParam int singleOrderID){
+    public String addOrderToCompound(@RequestParam int compoundOrderID, @RequestParam String emailOfFriend){
         try {
-            CompoundOrder compoundOrder;
-            Order singleOrder, order1;
+            Customer customer = customerServices.getCustomer(emailOfFriend);
+            if (customer == null){
+                return null;
+            }
+
+            Order order1;
             order1 = orderServices.getOrder(compoundOrderID);
-            singleOrder = orderServices.getOrder(singleOrderID);
 
-            if (order1 == null || singleOrder == null){
+            SingleOrder singleOrder = new SingleOrder(customer);
+
+            if (order1 == null){
                 return null;
             }
 
-            // check that the order not in another compound order
-            if (singleOrder.getParentOrder() != null){
-                return null;
-            }
-            if (order1 instanceof CompoundOrder){
-                compoundOrder = (CompoundOrder) order1;
+            if (order1 instanceof CompoundOrder compoundOrder){
                 compoundOrder.addOrder(singleOrder);
-                return compoundOrder;
+                compoundOrder = orderServices.addOrderNeedToConfirm(compoundOrder.getCustomer(), compoundOrderID);
+                if (compoundOrder == null){
+                    return null;
+                }
+                orderServices.addOrderNeedToConfirm(customer, compoundOrder.getOrderID());
+                return compoundOrder.toString();
             }else{
                 return null;
             }
@@ -101,12 +106,21 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping("/getAllOrderNeededToConfirmByCustomer/")
     public String getAllOrdersNeededToConfirmToCustomer(@RequestParam String email){
         Customer customer = customerServices.getCustomerIsLogged(email);
         if (customer == null){
             return null;
         }
-//        return customer.getNeedConfirmOrders().toString();
+        return orderServices.getAllOrdersNeededToConfirmForCustomer(customer).toString();
+    }
+
+    @PostMapping("ConfirmOrder")
+    public String confirmOrderByCustomer(@RequestParam String email, @RequestParam int orderID){
+        Customer customer = customerServices.getCustomerIsLogged(email);
+        if (customer == null){
+            return null;
+        }
+        return orderServices.confirmOrderByCustomer(customer, orderID).toString();
     }
 }
