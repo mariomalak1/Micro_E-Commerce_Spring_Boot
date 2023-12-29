@@ -63,6 +63,9 @@ public class OrderInMemoryServices implements IOrderServices{
     @Override
     public CompoundOrder confirmOrderByCustomer(Customer customer, int orderID){
         List<CompoundOrder> orders = DataBaseInMemory.orderNeededToConfirm.get(customer);
+        if (orders == null){
+            return null;
+        }
         for (CompoundOrder o : orders) {
             if (o.getOrderID() == orderID){
                 orders.remove(o);
