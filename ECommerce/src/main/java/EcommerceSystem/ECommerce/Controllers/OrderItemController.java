@@ -48,6 +48,9 @@ public class OrderItemController {
                     return "The Order Owner is not email provided.";
                 }
             }
+            else{
+                return "This not email of the customer owner of order.";
+            }
         }
 
         // check that the order not finished
@@ -78,7 +81,7 @@ public class OrderItemController {
     }
 
     @DeleteMapping("delete/{id}")
-    public String addItemInOrder(@PathVariable int id){
+    public String deleteItemInOrder(@PathVariable int id){
         OrderItem orderItem = orderItemServices.getOrderItem(id);
         if (orderItem == null){
             return "No Order Item with this ID.";

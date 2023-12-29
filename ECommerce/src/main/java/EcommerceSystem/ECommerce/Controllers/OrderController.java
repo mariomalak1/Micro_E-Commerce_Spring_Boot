@@ -59,7 +59,7 @@ public class OrderController {
         }
         if (order instanceof CompoundOrder compoundOrder){
             List<Customer> customerList = compoundOrder.getConfirmedCustomers();
-            if (customerList.size() != compoundOrder.getOrders().size()){
+            if (customerList.size() < compoundOrder.getOrders().size()){
                 return "still some of your friends not confirm on the order.";
             }
         }
@@ -145,7 +145,21 @@ public class OrderController {
         if (customer == null){
             return null;
         }
-        return orderServices.confirmOrderByCustomer(customer, orderID).toString();
+
+        Order order = orderServices.getOrder(orderID);
+        if (order == null){
+            return "No order with this id.";
+        }
+        if (order instanceof CompoundOrder compoundOrder){
+            compoundOrder = orderServices.confirmOrderByCustomer(customer, orderID);
+            if (compoundOrder == null){
+                return "No order with this id for this customer to confirm it.";
+            }
+            compoundOrder.customerConfirm(customer);
+            return compoundOrder.toString();
+        }else{
+            return "It's not compound order.";
+        }
     }
 
     @DeleteMapping("/delete/")
