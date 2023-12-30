@@ -19,6 +19,11 @@ public class OrderController {
     @Autowired
     IProductServices productServices = new ProductInMemoryServices();
 
+    @Autowired
+    NotificationSenderServices notificationSenderServices= new NotificationSenderServices();
+    @Autowired
+    QueueServices queueServices= new QueueServices();
+
     @PostMapping("")
     public String createNewOrder(@RequestParam String email, @RequestParam(required = false) Boolean composite){
         Order order;
@@ -47,16 +52,18 @@ public class OrderController {
     }
 
     @PostMapping("/checkout/")
-    public Boolean checkout(@RequestParam String email){
+    public String checkout(@RequestParam String email){
         Customer customer = customerServices.getCustomerIsLogged(email);
         if (customer == null){
-            return null;
+            return "There is no customer with this id";
         }
         Order order = orderServices.getUnFinishedOrderForCustomer(customer);
         if (order == null){
-            return false;
+            return "There is no order for this customer";
         }
-        return order.finishOrder();
+        order.finishOrder();
+        notificationSenderServices.SetOrder(order);
+        return notificationSenderServices.notifyCustomer();
     }
 
     @GetMapping("/getOrderForCustomer/")
@@ -138,25 +145,35 @@ public class OrderController {
     public String deleteOrder(@RequestParam int orderID){
         Order order = orderServices.getOrder(orderID);
         if (order == null){
-            return "No order with this id.";
+            return "There is no order with that id";
         }
-        if (order.isFinished()){
-            return "This order is finished can't delete it.";
-        }
-        order = orderServices.deleteOrder(order);
-        if (order == null){
-            return "Can't delete this order.";
-        }
-        if (order instanceof CompoundOrder compoundOrder){
-            for (Order o : compoundOrder.getOrders()){
-                // to delete it from need confirm orders
-                orderServices.confirmOrderByCustomer(o.getCustomer(), compoundOrder.getOrderID());
-                // delete all single orders that in this
-                orderServices.deleteOrder(o);
+
+        if(!order.GetStatus()){
+            if (order instanceof CompoundOrder compoundOrder){
+                System.out.println(compoundOrder.getOrders().size());
+                for (Order o : compoundOrder.getOrders()){
+                    System.out.println(o.getCustomer().getEmail());
+                    // to delete it from need confirm orders
+                    queueServices.DelMessages(o);
+                    order.getCustomer().setBalance(order.getCustomer().getBalance()+order.getTotalPrice());
+                    for (int i = 0 ; i < o.getAllProductsInTheOrder().size();i++){
+                        productServices.IncreaseProductQuantity(o.getOrderItemList().get(i).getProduct().getSerialNumber(),o.getOrderItemList().get(i).getQuantity());
+                    }
+                    orderServices.confirmOrderByCustomer(o.getCustomer(), compoundOrder.getOrderID());
+                    // delete all single orders that in this
+                    orderServices.deleteOrder(o);
+                }
             }
-            return "Order Deleted Successfully With all of it's orders.";
-        }else{
+            for (int i = 0 ; i < order.getAllProductsInTheOrder().size();i++){
+                productServices.IncreaseProductQuantity(order.getOrderItemList().get(i).getProduct().getSerialNumber(),order.getOrderItemList().get(i).getQuantity());
+            }
+            order.getCustomer().setBalance(order.getCustomer().getBalance()+order.getTotalPrice());
+            order = orderServices.deleteOrder(order);
+            queueServices.DelMessages(order);
             return "Order Deleted Successfully.";
+        }
+        else{
+            return "This order is shipped, it can't be canceled";
         }
     }
 }

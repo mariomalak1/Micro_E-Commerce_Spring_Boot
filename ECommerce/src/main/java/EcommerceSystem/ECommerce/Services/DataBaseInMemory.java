@@ -2,9 +2,7 @@ package EcommerceSystem.ECommerce.Services;
 
 import EcommerceSystem.ECommerce.Models.*;
 
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class DataBaseInMemory {
     static HashMap<Integer, Order> orderList = new HashMap<Integer, Order>();
@@ -18,4 +16,5 @@ public class DataBaseInMemory {
 
     // is unique with his serial number
     static HashMap<String, Product> productList = new HashMap<String, Product>();
+    static Queue<NotificationTemplateModel> queue = new LinkedList<>();
 }

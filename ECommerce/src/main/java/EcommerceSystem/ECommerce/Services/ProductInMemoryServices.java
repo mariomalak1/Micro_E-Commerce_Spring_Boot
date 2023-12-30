@@ -39,4 +39,14 @@ public class ProductInMemoryServices implements IProductServices{
         }
         return productList;
     }
+    @Override
+    public void IncreaseProductQuantity(String productSerial, int Quantity){
+        if (DataBaseInMemory.productList.containsKey(productSerial)) {
+            Product existingProduct =DataBaseInMemory.productList.get(productSerial);
+            existingProduct.setAvailableNumber(existingProduct.getAvailableNumber() + Quantity);
+            DataBaseInMemory.productList.put(productSerial, existingProduct);
+        } else {
+            System.out.println("Product with Serial Number " + productSerial + " not found in the map.");
+        }
+    }
 }

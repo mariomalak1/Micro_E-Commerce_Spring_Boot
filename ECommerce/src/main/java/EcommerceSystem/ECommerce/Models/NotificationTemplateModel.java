@@ -1,47 +1,47 @@
 package EcommerceSystem.ECommerce.Models;
 
+import javax.security.auth.Subject;
+import java.util.ArrayList;
+
 public abstract class NotificationTemplateModel {
     protected String subject;
     protected String content;
-    protected String[] langauges;
-    protected String[] placeHolders;
-    protected Customer customerAccount;
-    protected Product[] product;
 
-    public NotificationTemplateModel(Customer customerAccount, Product[] product) {
-        this.customerAccount = customerAccount;
-        this.product = product;
+    protected ArrayList<String> langauges = new ArrayList<>();
+
+    protected Order order;
+    public NotificationTemplateModel(Order order , String content) {
+        this.order = order;
+        this.content = content;
+        setPlaceHolders(order);
+        setLangauges();
+        setSubject();
     }
 
     public String getSubject() {
         return subject;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
+    public abstract void setSubject() ;
 
     public String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public  void AddToContent(String Signutre){
+        content+=" "+Signutre;
     }
-
-    public String[] getLangauges() {
+    public ArrayList<String> getLangauges() {
         return langauges;
     }
 
-    public void setLangauges(String[] langauges) {
-        this.langauges = langauges;
+    public abstract void setLangauges();
+    public abstract void setPlaceHolders(Order order);
+    public Order GetOrder(){
+        return order;
     }
-
-    public String[] getPlaceHolders() {
-        return placeHolders;
+    public void SetOrder(Order order){
+        this.order = order;
     }
-
-    public void setPlaceHolders(String[] placeHolders) {
-        this.placeHolders = placeHolders;
-    }
+    public abstract NotificationTemplateModel clone();
 }

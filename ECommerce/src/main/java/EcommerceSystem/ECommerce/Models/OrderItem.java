@@ -1,6 +1,6 @@
 package EcommerceSystem.ECommerce.Models;
 
-public class OrderItem {
+public class  OrderItem {
     private static int OrderItemsNumber = 0;
     private int ID;
     private int Quantity;

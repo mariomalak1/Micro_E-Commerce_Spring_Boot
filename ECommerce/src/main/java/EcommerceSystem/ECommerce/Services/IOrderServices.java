@@ -7,6 +7,7 @@ import EcommerceSystem.ECommerce.Models.Order;
 import java.util.List;
 
 public interface IOrderServices {
+
     Order addOrder(Order o);
     Order deleteOrder(Order o);
     Order getOrder (int id);

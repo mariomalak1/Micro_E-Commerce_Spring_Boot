@@ -9,7 +9,9 @@ public abstract class Order {
     protected Order ParentOrder;
     protected List<OrderItem> orderItemList;
     protected Boolean Finished;
+    protected Boolean IsShipped = false;
 
+    public abstract List<Product> getAllProductsInTheOrder();
 
     // make the order finished and decrement the customer or customers balance
     public abstract Boolean finishOrder();
@@ -20,8 +22,12 @@ public abstract class Order {
         }
         return Finished;
     }
-
-
+    public  Boolean GetStatus(){
+        return IsShipped;
+    }
+    public void Ship(){
+        this.IsShipped=true;
+    }
     // getters setters
 
     public int getOrderID() {

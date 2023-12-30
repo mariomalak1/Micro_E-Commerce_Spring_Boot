@@ -13,20 +13,20 @@ public class Customer {
     private Double Balance;
     private Boolean Logged;
     private String Address;
-
+    private ArrayList<Boolean> Channels;
     // list to hold all compound orders that need to confirm from the customer, if it confirmed will deleted from this list and add to the confirmed customers in compound order, and will added to orders
 
     public static int getCustomersNumber() {
         return CustomersNumber;
     }
 
-    public Customer(String name, String password, String email, Double balance, String address) {
+    public Customer(String name, String password, String email, Double balance, String address , ArrayList<Boolean> channels) {
         Address = address;
         Name = name;
         Password = password;
         Email = email;
         this.Logged = true;
-
+        this.Channels = channels;
         // assign the balance by a default value
         if (balance == 0){
             Balance = 1000.0;
@@ -105,5 +105,8 @@ public class Customer {
 
     public void setBalance(Double balance) {
         Balance = balance;
+    }
+    public ArrayList<Boolean> GetChannels(){
+        return Channels;
     }
 }

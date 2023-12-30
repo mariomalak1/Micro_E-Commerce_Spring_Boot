@@ -1,27 +1,31 @@
 package EcommerceSystem.ECommerce.Models;
 
 public class OrderShippmentNotificationModel extends NotificationTemplateModel{
-    public OrderShippmentNotificationModel(Customer customerAccount, Product[] product) {
-        super(customerAccount, product);
+    public OrderShippmentNotificationModel(Order order) {
+        super(order,"the order {} for the customer {} had been shipped :)");
     }
 
     @Override
-    public void setSubject(String subject) {
-        super.setSubject(subject);
+    public void setSubject() {
+        super.subject="Shippment";
+    }
+
+
+    @Override
+    public void setLangauges() {
+        langauges.add("Arabic");
+        langauges.add("English");
+
+    }
+    @Override
+    public void setPlaceHolders(Order order) {
+        String orderValue = String.valueOf(order.getOrderID());
+        content = content.replaceFirst("\\{\\}", orderValue);
+        content = content.replaceFirst("\\{\\}", order.getCustomer().getName());
     }
 
     @Override
-    public void setContent(String content) {
-        super.setContent(content);
-    }
-
-    @Override
-    public void setLangauges(String[] langauges) {
-        super.setLangauges(langauges);
-    }
-
-    @Override
-    public void setPlaceHolders(String[] placeHolders) {
-        super.setPlaceHolders(placeHolders);
+    public NotificationTemplateModel clone() {
+        return new OrderShippmentNotificationModel(order);
     }
 }

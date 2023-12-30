@@ -1,27 +1,36 @@
 package EcommerceSystem.ECommerce.Models;
 
 public class OrderPlacementNotificationModel extends NotificationTemplateModel {
-    public OrderPlacementNotificationModel(Customer customerAccount, Product[] product) {
-        super(customerAccount, product);
+    public OrderPlacementNotificationModel(Order order) {
+        super(order,"Dear {}, your booking of the product/s {} is confirmed, thanks for using our store :)");
     }
 
     @Override
-    public void setContent(String content) {
-        super.setContent(content);
+    public void setSubject() {
+        super.subject="Placement";
+    }
+
+
+    @Override
+    public void setLangauges() {
+        langauges.add("Arabic");
+        langauges.add("English");
+        langauges.add("Spanish");
+    }
+    @Override
+    public void setPlaceHolders(Order order) {
+        content = content.replaceFirst("\\{\\}", order.getCustomer().getName());
+        String ProductsNames = "";
+        for (int i = 0 ; i < order.getAllProductsInTheOrder().size();i++){
+            ProductsNames+=order.getAllProductsInTheOrder().get(i).getName() +", ";
+        }
+        ProductsNames = ProductsNames.substring(0,ProductsNames.length()-2);
+        content = content.replaceFirst("\\{\\}", ProductsNames);
     }
 
     @Override
-    public void setLangauges(String[] langauges) {
-        super.setLangauges(langauges);
+    public NotificationTemplateModel clone() {
+        return new OrderPlacementNotificationModel(order);
     }
 
-    @Override
-    public void setPlaceHolders(String[] placeHolders) {
-        super.setPlaceHolders(placeHolders);
-    }
-
-    @Override
-    public void setSubject(String subject) {
-        super.setSubject(subject);
-    }
 }
