@@ -1,18 +1,10 @@
 package EcommerceSystem.ECommerce.Services;
 
-import EcommerceSystem.ECommerce.Models.Customer;
 import EcommerceSystem.ECommerce.Models.NotificationTemplateModel;
-import EcommerceSystem.ECommerce.Models.Product;
-
-public class BaseDecoratorServices extends NotifierServices{
-
-    private NotifierServices notifier;
-    public BaseDecoratorServices(Customer customer, Product[] prodcts) {
-        super(customer, prodcts);
+public abstract class BaseDecoratorServices extends NotifierServices{
+    protected NotifierServices notifier;
+    public BaseDecoratorServices(NotifierServices notifierServices){
+        this.notifier = notifierServices;
     }
 
-    @Override
-    public String sendNotification(NotificationTemplateModel notificationTemplateModel) {
-        return super.sendNotification(notificationTemplateModel);
-    }
 }

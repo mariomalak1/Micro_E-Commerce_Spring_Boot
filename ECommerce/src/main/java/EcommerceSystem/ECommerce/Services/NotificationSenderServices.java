@@ -1,22 +1,27 @@
 package EcommerceSystem.ECommerce.Services;
 
-import EcommerceSystem.ECommerce.Models.Customer;
-import EcommerceSystem.ECommerce.Models.NotificationTemplateModel;
+import EcommerceSystem.ECommerce.Models.*;
+import org.springframework.stereotype.Service;
 
+@Service
 public class NotificationSenderServices {
-    private EmailServices emailServices;
-    private BaseDecoratorServices baseDecoratorServices;
-    private Customer customer;
-    private NotificationTemplateModel notificationTemplateModel;
+    private NotifierServices notifierServices ;
+    private NotificationTemplateModel notificationTemplateModel ;
+    private Order order;
 
-    public NotificationSenderServices(EmailServices emailServices, BaseDecoratorServices baseDecoratorServices, Customer customer, NotificationTemplateModel notificationTemplateModel) {
-        this.emailServices = emailServices;
-        this.baseDecoratorServices = baseDecoratorServices;
-        this.customer = customer;
-        this.notificationTemplateModel = notificationTemplateModel;
+    public NotificationSenderServices (){}
+    public void SetOrder(Order order){
+        this.order = order;
     }
+    public String notifyCustomer(){
+        notifierServices = new EmailServices();
+        if(order.getCustomer().GetChannels().get(0).equals(true)){
+            notifierServices= new SmsDecorator(notifierServices);
+        }
+        notificationTemplateModel = new OrderShippmentNotificationModel(order);
+        notifierServices.sendNotification(notificationTemplateModel);
 
-    public void notifyCustomer(){
-
+        notificationTemplateModel = new OrderPlacementNotificationModel(order);
+        return notificationTemplateModel.getContent();
     }
 }

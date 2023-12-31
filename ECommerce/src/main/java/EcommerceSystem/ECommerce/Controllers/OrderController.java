@@ -2,10 +2,10 @@ package EcommerceSystem.ECommerce.Controllers;
 
 import EcommerceSystem.ECommerce.Models.*;
 import EcommerceSystem.ECommerce.Services.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,6 +19,11 @@ public class OrderController {
 
     @Autowired
     IProductServices productServices = new ProductInMemoryServices();
+
+    @Autowired
+    NotificationSenderServices notificationSenderServices= new NotificationSenderServices();
+    @Autowired
+    QueueServices queueServices= new QueueServices();
 
     @PostMapping("")
     public String createNewOrder(@RequestParam String email, @RequestParam(required = false) Boolean composite){
@@ -51,22 +56,15 @@ public class OrderController {
     public String checkout(@RequestParam String email){
         Customer customer = customerServices.getCustomerIsLogged(email);
         if (customer == null){
-            return "please login first.";
+            return "There is no customer with this id";
         }
         Order order = orderServices.getUnFinishedOrderForCustomer(customer);
         if (order == null){
-            return "No order created by this customer.";
+            return "There is no order for this customer";
         }
-        if (order instanceof CompoundOrder compoundOrder){
-            List<Customer> customerList = compoundOrder.getConfirmedCustomers();
-            if (customerList.size() < compoundOrder.getOrders().size()){
-                return "still some of your friends not confirm on the order.";
-            }
-        }
-        if (order.finishOrder()){
-            return "order finished";
-        }
-        return "can't  finish this order.";
+        order.finishOrder();
+        notificationSenderServices.SetOrder(order);
+        return notificationSenderServices.notifyCustomer();
     }
 
     @GetMapping("/getOrderForCustomer/")
@@ -132,11 +130,7 @@ public class OrderController {
         if (customer == null){
             return null;
         }
-        List<CompoundOrder> compoundOrderList = orderServices.getAllOrdersNeededToConfirmForCustomer(customer);
-        if (compoundOrderList == null){
-            return new ArrayList<>().toString();
-        }
-        return compoundOrderList.toString();
+        return orderServices.getAllOrdersNeededToConfirmForCustomer(customer).toString();
     }
 
     @PostMapping("/ConfirmOrder/")
@@ -145,46 +139,55 @@ public class OrderController {
         if (customer == null){
             return null;
         }
-
-        Order order = orderServices.getOrder(orderID);
-        if (order == null){
-            return "No order with this id.";
-        }
-        if (order instanceof CompoundOrder compoundOrder){
-            compoundOrder = orderServices.confirmOrderByCustomer(customer, orderID);
-            if (compoundOrder == null){
-                return "No order with this id for this customer to confirm it.";
-            }
-            compoundOrder.customerConfirm(customer);
-            return compoundOrder.toString();
-        }else{
-            return "It's not compound order.";
-        }
+        return orderServices.confirmOrderByCustomer(customer, orderID).toString();
     }
 
     @DeleteMapping("/delete/")
     public String deleteOrder(@RequestParam int orderID){
         Order order = orderServices.getOrder(orderID);
         if (order == null){
-            return "No order with this id.";
+            return "There is no order with that id";
         }
-        if (order.isFinished()){
-            return "This order is finished can't delete it.";
-        }
-        order = orderServices.deleteOrder(order);
-        if (order == null){
-            return "Can't delete this order.";
-        }
-        if (order instanceof CompoundOrder compoundOrder){
-            for (Order o : compoundOrder.getOrders()){
-                // to delete it from need confirm orders
-                orderServices.confirmOrderByCustomer(o.getCustomer(), compoundOrder.getOrderID());
-                // delete all single orders that in this
-                orderServices.deleteOrder(o);
+
+        if(!order.GetStatus()){
+            if (order instanceof CompoundOrder compoundOrder){
+                System.out.println(compoundOrder.getOrders().size());
+                for (Order o : compoundOrder.getOrders()){
+                    System.out.println(o.getCustomer().getEmail());
+                    // to delete it from need confirm orders
+                    queueServices.DelMessages(o);
+                    order.getCustomer().setBalance(order.getCustomer().getBalance()+order.getTotalPrice());
+                    for (int i = 0 ; i < o.getAllProductsInTheOrder().size();i++){
+                        productServices.IncreaseProductQuantity(o.getOrderItemList().get(i).getProduct().getSerialNumber(),o.getOrderItemList().get(i).getQuantity());
+                    }
+                    orderServices.confirmOrderByCustomer(o.getCustomer(), compoundOrder.getOrderID());
+                    // delete all single orders that in this
+                    orderServices.deleteOrder(o);
+                }
             }
-            return "Order Deleted Successfully With all of it's orders.";
-        }else{
+            for (int i = 0 ; i < order.getAllProductsInTheOrder().size();i++){
+                productServices.IncreaseProductQuantity(order.getOrderItemList().get(i).getProduct().getSerialNumber(),order.getOrderItemList().get(i).getQuantity());
+            }
+            order.getCustomer().setBalance(order.getCustomer().getBalance()+order.getTotalPrice());
+            order = orderServices.deleteOrder(order);
+            queueServices.DelMessages(order);
             return "Order Deleted Successfully.";
         }
+        else{
+            return "This order is shipped, it can't be canceled";
+        }
+    }
+
+    @GetMapping("/getAllOrdersForCustomer/")
+    public String getAllOrdersForCustomer(@RequestParam String email){
+        Customer customer = customerServices.getCustomer(email);
+        if (customer == null){
+            return "No Customer with this email.";
+        }
+        List<Order> customerOrders = orderServices.getAllOrdersForCustomer(customer);
+        if (customerOrders == null){
+            return "No orders for this customer.";
+        }
+        return customerOrders.toString();
     }
 }

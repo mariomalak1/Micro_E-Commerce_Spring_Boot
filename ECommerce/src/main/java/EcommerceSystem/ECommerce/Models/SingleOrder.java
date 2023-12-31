@@ -11,6 +11,14 @@ public class SingleOrder extends Order {
         super.ParentOrder = null;
         super.orderItemList = new ArrayList<>();
     }
+    @Override
+    public List<Product> getAllProductsInTheOrder() {
+        List<Product> productList = new ArrayList<>();
+        for (OrderItem orderItem: super.orderItemList) {
+            productList.add(orderItem.getProduct());
+        }
+        return productList;
+    }
 
     @Override
     public double getTotalPrice() {
@@ -31,15 +39,6 @@ public class SingleOrder extends Order {
         getCustomer().setBalance(newBalance);
         Finished = true;
         return true;
-    }
-
-    @Override
-    public List<Product> getAllProductsInTheOrder() {
-        List<Product> productList = new ArrayList<>();
-        for (OrderItem orderItem: super.orderItemList) {
-            productList.add(orderItem.getProduct());
-        }
-        return productList;
     }
 
     @Override

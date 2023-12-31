@@ -16,7 +16,17 @@ public class CompoundOrder extends Order {
         Orders = new ArrayList<>();
         confirmedCustomers = new ArrayList<>();
     }
-
+    @Override
+    public List<Product> getAllProductsInTheOrder() {
+        List<Product> productList = new ArrayList<>();
+        for (OrderItem orderItem: super.orderItemList) {
+            productList.add(orderItem.getProduct());
+        }
+        for (Order o: Orders) {
+            productList.addAll(o.getAllProductsInTheOrder());
+        }
+        return productList;
+    }
     @Override
     public double getTotalPrice() {
         double total = 0;
@@ -47,17 +57,6 @@ public class CompoundOrder extends Order {
         return true;
     }
 
-    @Override
-    public List<Product> getAllProductsInTheOrder() {
-        List<Product> productList = new ArrayList<>();
-        for (OrderItem orderItem: super.orderItemList) {
-            productList.add(orderItem.getProduct());
-        }
-        for (Order o: Orders) {
-            productList.addAll(o.getAllProductsInTheOrder());
-        }
-        return productList;
-    }
 
     @Override
     public String toString() {

@@ -9,4 +9,5 @@ public interface IProductServices {
     Product deleteProduct(Product o);
     Product getProduct (String serial);
     List<Product> getAllProducts();
+    void IncreaseProductQuantity(String productSerial , int Quantity);
 }

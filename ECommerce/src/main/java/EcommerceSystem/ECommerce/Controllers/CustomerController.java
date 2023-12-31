@@ -9,6 +9,7 @@ import EcommerceSystem.ECommerce.Services.ICustomerServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,8 +19,8 @@ public class CustomerController {
     ICustomerServices customerServices = new CustomerInMemoryServices();
 
     @PostMapping("")
-    public String createNewCustomer(@RequestParam String name, @RequestParam String password, @RequestParam String email, @RequestParam String address, @RequestParam(required = false) double balance ){
-        Customer customer = new Customer(name, password, email, balance, address);
+    public String createNewCustomer(@RequestParam String name, @RequestParam String password, @RequestParam String email, @RequestParam String address, @RequestParam(required = false) double balance , @RequestParam ArrayList<Boolean> channels){
+        Customer customer = new Customer(name, password, email, balance, address,channels);
         customer = customerServices.addCustomer(customer);
         if (customer == null){
             return null;
